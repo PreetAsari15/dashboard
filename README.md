@@ -1,6 +1,6 @@
 ﻿# Waste Management Application
  
-  ##To-Do
+  ## To-Do
   
 ```
 1. Update Issues
