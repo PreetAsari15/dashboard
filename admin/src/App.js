@@ -51,7 +51,7 @@ const App = () => {
               {/* Pages */}
               <Route path="/testing1" element="Testing1" />
               <Route path="/testing2" element="Testing2" />
-              <Route path="/testing3" element="Testing3" />
+              <Route path="/customers" element="Customers" />
 
               {/* Apps */}
               <Route path="/kanban" element="Kanban" />
