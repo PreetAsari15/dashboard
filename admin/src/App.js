@@ -5,6 +5,7 @@ import { TooltipComponent } from "@syncfusion/ej2-react-popups";
 
 import { Navbar, Footer, Sidebar, ThemeSettings } from "./components";
 import {
+  Orders,
   Home,
   Editor,
   ColorPicker,
@@ -32,7 +33,7 @@ const App = () => {
               <button
                 type="button"
                 className="text-3xl p-3 hover:drop-shadow-xl hover:bg-light-gray text-white"
-                style={{ background: "blue", borderRadius: "50%" }}
+                style={{ background: "rgb(100 116 139)", borderRadius: "50%" }}
               >
                 <FiSettings />
               </button>
@@ -69,7 +70,7 @@ const App = () => {
 
               {/* Pages */}
               {/* <Route path="/testing1" element={<Testing1 />} /> */}
-              {/* <Route path="/testing2" element={<Testing2 />} /> */}
+              <Route path="/orders" element={<Orders />} />
               <Route path="/customers" element={<Customers />} />
 
               {/* Apps */}

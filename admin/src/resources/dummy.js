@@ -13,7 +13,7 @@ import {
   FiBarChart,
   FiCreditCard,
   FiStar,
-  FiShoppingCart,
+  FiHome,
 } from "react-icons/fi";
 import {
   BsKanban,
@@ -514,8 +514,8 @@ export const links = [
     title: "Dashboard",
     links: [
       {
-        name: "ecommerce",
-        icon: <FiShoppingBag />,
+        name: "home",
+        icon: <FiHome />,
       },
     ],
   },
@@ -739,7 +739,7 @@ export const recentTransactions = [
 
 export const weeklyStats = [
   {
-    icon: <FiShoppingCart />,
+    icon: <FiHome />,
     amount: "-$560",
     title: "Top Sales",
     desc: "Johnathan Doe",
