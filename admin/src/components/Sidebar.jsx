@@ -7,25 +7,26 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 import Logo from '../resources/UoR.png'
 
 import { links } from '../resources/dummy'
-import { IoMdHeartEmpty } from 'react-icons/io'
+import { useStateContext } from '../contexts/ContextProvider'
+// import { IoMdHeartEmpty } from 'react-icons/io'
 
-const activeMenu = true;
-const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded lg text-white text-md m-2';
-const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
 
 const Sidebar = () => {
+  const {activeMenu, setActiveMenu} = useStateContext();
+  const activeLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded lg text-white text-md m-2';
+  const normalLink = 'flex items-center gap-5 pl-4 pt-3 pb-2.5 rounded-lg text-md text-gray-700 dark:text-gray-200 dark:hover:text-black hover:bg-light-gray m-2'
   return (
     <div className="ml-3 h-screen md:overflow-hidden overflow-auto md:hover:overflow-auto pb-10">
       {activeMenu && (<>
       <div className="flex justify-between items-center">
-        <Link to="/" onClick={() => {}}
+        <Link to="/" onClick={() => setActiveMenu(false)}
         className="items-center mt-4 ml-3 gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900">
           {/* <SiShopware /> <span>Shoppy</span> */}
           {/* <Jotaro className="w-50 h-50" /> <span>Shoppy</span> */}
           <img src={Logo} className="w-20 h-50" alt="Didn't work init" />
         </Link>
         <TooltipComponent content="Menu" position="BottomCenter">
-          <button type="button" onClick={() => {}}
+          <button type="button" onClick={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
           className="text-xl rounded-full p-3 hover:bg-light-gray mt-4 block md:hidden"
           >
             <MdOutlineCancel />
