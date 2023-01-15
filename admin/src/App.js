@@ -25,10 +25,11 @@ import {
 import { useStateContext } from "./contexts/ContextProvider";
 
 import "./App.css";
+import Employees from "./pages/Employees";
 
 const App = () => {
   const { activeMenu } = useStateContext();
-  // const activeMenu = true;
+
   return (
     <div>
       <BrowserRouter>
@@ -74,7 +75,7 @@ const App = () => {
               <Route path="/home" element={<Home />} />
 
               {/* Pages */}
-              {/* <Route path="/testing1" element={<Testing1 />} /> */}
+              <Route path="/employees" element={<Employees />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/customers" element={<Customers />} />
 
