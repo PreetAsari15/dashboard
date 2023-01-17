@@ -39,7 +39,7 @@ const App = () => {
               <button
                 type="button"
                 className="text-3xl p-3 hover:drop-shadow-xl hover:bg-light-gray text-white"
-                style={{ background: "rgb(100 116 139)", borderRadius: "50%" }}
+                style={{ background: "#567189", borderRadius: "50%" }}
               >
                 <FiSettings />
               </button>
