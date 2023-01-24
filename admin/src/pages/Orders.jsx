@@ -1,77 +1,69 @@
+// import React from 'react'
 import React from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, ContextMenu, Filter, Page, ExcelExport, PdfExport, Edit, Inject } from '@syncfusion/ej2-react-grids';
+import { GridComponent, ColumnsDirective, ColumnDirective } from '@syncfusion/ej2-react-grids';
 import {RichTextEditorComponent} from '@syncfusion/ej2-react-richtexteditor'
-import orders from '../resources/orders.json'
-import { ordersData, contextMenuItems, ordersGrid } from '../resources/dummy';
-
-import { Header } from '../components';
-import { useNavigate } from 'react-router-dom';
-
+import orders from '../resources/orders.json';
+import { useNavigate } from "react-router-dom";
+// import { updateSampleSection } from '../common/sample-base';
 const Orders = () => {
-  const editing = { allowDeleting: true, allowEditing: true };
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    const renderOrderStatus = (orderStatus) => {
+        if (orderStatus === "Accepted") {
+            return <RichTextEditorComponent color={"green"}>{orderStatus}</RichTextEditorComponent>;
+          }
+          if (orderStatus === "Pending") {
+            return <RichTextEditorComponent color={"orange"}>{orderStatus}</RichTextEditorComponent>;
+          }
+          if (orderStatus === "Declined") {
+            return <RichTextEditorComponent color={"red"}>{orderStatus}</RichTextEditorComponent>;
+          }
+    }
 
-  const renderOrderStatus = (orderStatus) => {
-    if (orderStatus === "Accepted") {
-      return <RichTextEditorComponent color={"green"}>{orderStatus}</RichTextEditorComponent>;
-    }
-    if (orderStatus === "Pending") {
-      return <RichTextEditorComponent color={"orange"}>{orderStatus}</RichTextEditorComponent>;
-    }
-    if (orderStatus === "Declined") {
-      return <RichTextEditorComponent color={"red"}>{orderStatus}</RichTextEditorComponent>;
-    }
-  };
-  const tableColumns = [
-    {
-      title: 'Order ID',
-      dataIndex: 'orderID',
-      key: 'orderID',
-    },
-    {
-      title: 'Delivery Address',
-      dataIndex: 'deliveryAddress',
-      key: 'deliveryAddress'
-    },
-    {
-      title: 'Price',
-      dataIndex: 'price',
-      key: 'price',
-      render: (price) => `${price} $`
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: renderOrderStatus
-    }
-  ];
+    const tableColumns = [
+        {
+          title: "Order ID",
+          dataIndex: "orderID",
+          key: "orderID",
+        },
+        {
+          title: "Delivery Address",
+          dataIndex: "deliveryAddress",
+          key: "deliveryAddress",
+        },
+        {
+          title: "Price",
+          dataIndex: "price",
+          key: "price",
+          render: (price) => `${price} $`,
+        },
+        {
+          title: "Status",
+          dataIndex: "status",
+          key: "status",
+          render: renderOrderStatus,
+        },
+      ];
+
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-      <Header category="Page" title="Orders" />
-      <GridComponent
-        id="gridcomp"
-        dataSource={orders}
-        allowPaging
-        allowSorting
-        allowExcelExport
-        allowPdfExport
-        contextMenuItems={contextMenuItems}
+    <div className='control-pane'>
+    <div className='control-section' title={Orders}>
+      <GridComponent dataSource={orders} height='350'>
+        <ColumnsDirective
         columns={tableColumns}
-        editSettings={editing}
+        rowKey="orderID"
         onRow={(orderItem) => ({
-          onclick: () => navigate(`order/${orderItem.orderID}`)
-        })}
-      >
-        <ColumnsDirective>
-          {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-          {ordersGrid.map((item, index) => <ColumnDirective key={index} {...item} />)}
-        </ColumnsDirective>
-        <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport]} />
+          onClick: () => navigate(`order/${orderItem.orderID}`),
+        })}/>
+          {/* <ColumnDirective field='OrderID' headerText='Order ID' width='120' textAlign='Right'></ColumnDirective>
+          <ColumnDirective field='DeliveryAddress' headerText='DeliveryAddress' width='350'></ColumnDirective>
+          <ColumnDirective field='Freight' headerText='Freight' width='120' format='C2' textAlign='Right'/>
+          <ColumnDirective field='Status' headerText='Status' width='130' textAlign='Right'></ColumnDirective> */}
+        {/* </ColumnsDirective> */}
       </GridComponent>
-        <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport]} />
     </div>
-  );
-};
-export default Orders;
+  </div>
+  )
+}
+
+export default Orders
