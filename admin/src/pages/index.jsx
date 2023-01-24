@@ -3,6 +3,7 @@ export { default as Kanban } from './Kanban';
 export { default as Editor } from './Editor';
 export { default as Customers } from './Customers'; /* testing 3?*/
 export { default as Orders } from './Orders'; /* testing 2?*/
+export { default as OrdersV } from './OrdersV';
 export { default as ColorPicker } from './ColorPicker';
 export { default as Calendar } from './Calendar';
 export { default as Area } from './Charts/Area';

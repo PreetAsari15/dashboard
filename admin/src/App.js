@@ -132,6 +132,7 @@ import {
   ColorMapping,
   Editor,
   Home,
+  OrdersV,
 } from "./pages";
 import "./App.css";
 
@@ -202,6 +203,7 @@ const App = () => {
 
                 {/* pages  */}
                 <Route path="/orders" element={<Orders />} />
+                <Route path="/ordersV" element={<OrdersV />} />
                 <Route path="/employees" element={<Employees />} />
                 <Route path="/customers" element={<Customers />} />
 

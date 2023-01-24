@@ -1,9 +1,11 @@
 // import React from 'react'
 import React from 'react';
-import { GridComponent, ColumnsDirective, ColumnDirective } from '@syncfusion/ej2-react-grids';
+import { Header } from '../components';
+import { GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, ContextMenu, Filter, Page, ExcelExport, PdfExport, Edit, Inject } from '@syncfusion/ej2-react-grids';
 import {RichTextEditorComponent} from '@syncfusion/ej2-react-richtexteditor'
 import orders from '../resources/orders.json';
 import { useNavigate } from "react-router-dom";
+import { ordersGrid } from '../resources/dummy';
 // import { updateSampleSection } from '../common/sample-base';
 const Orders = () => {
     const navigate = useNavigate();
@@ -46,23 +48,28 @@ const Orders = () => {
       ];
 
   return (
+    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
     <div className='control-pane'>
-    <div className='control-section' title={Orders}>
-      <GridComponent dataSource={orders} height='350'>
-        <ColumnsDirective
-        columns={tableColumns}
-        rowKey="orderID"
-        onRow={(orderItem) => ({
-          onClick: () => navigate(`order/${orderItem.orderID}`),
-        })}/>
-          {/* <ColumnDirective field='OrderID' headerText='Order ID' width='120' textAlign='Right'></ColumnDirective>
-          <ColumnDirective field='DeliveryAddress' headerText='DeliveryAddress' width='350'></ColumnDirective>
-          <ColumnDirective field='Freight' headerText='Freight' width='120' format='C2' textAlign='Right'/>
-          <ColumnDirective field='Status' headerText='Status' width='130' textAlign='Right'></ColumnDirective> */}
-        {/* </ColumnsDirective> */}
+    <div className='control-section'>
+      <Header category="Page" title="Orders" />
+      <GridComponent height='350' dataSource={orders} title={"Orders"}>
+        <ColumnDirective
+                allowPaging
+                allowSorting
+                allowExcelExport
+                allowPdfExport
+                dataSource={orders}
+                columns={tableColumns}
+                rowKey="orderID"
+                onRow={(orderItem) => ({
+                  onClick: () => navigate(`order/${orderItem.orderID}`),
+                })}
+        />
       </GridComponent>
+        <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport]} />
+        </div>
+      </div>
     </div>
-  </div>
   )
 }
 
