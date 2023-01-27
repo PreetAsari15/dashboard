@@ -51,8 +51,8 @@ const Orders = () => {
     <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
     <div className='control-pane'>
     <div className='control-section'>
-      <Header category="Page" title="Orders" />
-      <GridComponent height='350' dataSource={orders} title={"Orders"}>
+      <Header category="Page" title="Orders"/>
+      <GridComponent dataSource={orders} title={"Orders"}>
         <ColumnDirective
                 allowPaging
                 allowSorting
