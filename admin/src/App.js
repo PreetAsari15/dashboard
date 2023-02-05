@@ -207,7 +207,7 @@ const App = () => {
                 <Route path="/ordersV" element={<OrdersV />} />
                 <Route path="/employees" element={<Employees />} />
                 <Route path="/customers" element={<Customers />} />
-                <Route path="/detailedorder" element={<DetailedOrder />} />
+                <Route path="orders/:orderID" element={<DetailedOrder />} />
 
                 {/* apps  */}
                 <Route path="/kanban" element={<Kanban />} />

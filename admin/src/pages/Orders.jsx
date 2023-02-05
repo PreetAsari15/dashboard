@@ -1,12 +1,11 @@
 // import React from 'react'
 import React from 'react';
 import { Header } from '../components';
-import { GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, ContextMenu, Filter, Page, ExcelExport, PdfExport, Edit, Inject } from '@syncfusion/ej2-react-grids';
+import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter } from '@syncfusion/ej2-react-grids';
 import {RichTextEditorComponent} from '@syncfusion/ej2-react-richtexteditor'
 import orders from '../resources/orders.json';
 import { useNavigate } from "react-router-dom";
 import { ordersGrid } from '../resources/dummy';
-// import { updateSampleSection } from '../common/sample-base';
 const Orders = () => {
     const navigate = useNavigate();
 
@@ -47,28 +46,35 @@ const Orders = () => {
         },
       ];
 
+      let grid;
+      const rowSelected = () => {
+          if (grid) {
+              /** Get the selected row indexes */
+              const selectedrowindex = grid.getSelectedRowIndexes();
+              /** Get the selected records. */
+              const selectedrecords = grid.getSelectedRecords();
+              alert(selectedrowindex + " : " + JSON.stringify(selectedrecords));
+              navigate(`${selectedrowindex}`)
+            }
+            // onClick: () => navigate(`${rowSelected.orderID}`)
+      };
+
   return (
-    <div className="m-2 md:m-10 mt-24 p-2 md:p-10 bg-white rounded-3xl">
-    <div className='control-pane'>
-    <div className='control-section'>
+    <div className="m-2 md:m-10 mt-24 bg-white p-2 md:p-10 rounded-3xl">
+
       <Header category="Page" title="Orders"/>
-      <GridComponent dataSource={orders} title={"Orders"}>
-        <ColumnDirective
-                allowPaging
-                allowSorting
-                allowExcelExport
-                allowPdfExport
-                dataSource={orders}
-                columns={tableColumns}
-                rowKey="orderID"
-                onRow={(orderItem) => ({
-                  onClick: () => navigate(`order/${orderItem.orderID}`),
-                })}
-        />
+
+      <GridComponent dataSource={orders} allowPaging={true} rowSelected={rowSelected}  ref={g => grid = g} allowFiltering={true} allowSorting={true} loadingIndicator={{ indicatorType: 'Shimmer' }} >
+
+        <ColumnsDirective>
+          <ColumnDirective field='orderID' headerText='Order ID (↑)' width='80' textAlign="Left"/>
+          <ColumnDirective field='price' headerText='Price (↑)' width='80' textAlign="Left"/>
+          <ColumnDirective field='deliveryAddress' headerText='Delivery Address (↑)' width='120' textAlign="Left"/>
+        </ColumnsDirective>
+
+        <Inject services={[Page, Sort, Filter]} />
       </GridComponent>
-        <Inject services={[Resize, Sort, ContextMenu, Filter, Page, ExcelExport, Edit, PdfExport]} />
-        </div>
-      </div>
+
     </div>
   )
 }
