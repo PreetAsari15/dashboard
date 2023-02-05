@@ -38,7 +38,7 @@ const DetailedOrder = () => {
         </div>
       </div>
       {/* Divider */}
-      <div className="divide-y divide-dashed md:divide-solid mt-3 ml-20 mr-20">
+      <div className="divide-y divide-dashed md:divide-solid mt-3 mb-3 ml-20 mr-20">
         <div></div>
         <div></div>
       </div>
@@ -85,6 +85,14 @@ const DetailedOrder = () => {
           <h2 className="text-lg">$ 23.45</h2>
         </div>
       </div>
+
+      {/* Divider */}
+      <div className="divide-y divide-dashed md:divide-solid mt-3 ml-20 mr-20">
+        <div></div>
+        <div></div>
+      </div>
+      {/* Divider ends */}
+
       <div className="buttonsContainer" style={styles.buttonsContainer}>
         <div className="declineBtn">
           <ButtonComponent

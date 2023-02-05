@@ -107,6 +107,8 @@
 // };
 
 // export default App;
+import { Amplify } from "aws-amplify";
+import awsconfig from "./aws-exports";
 
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -138,7 +140,7 @@ import {
 import "./App.css";
 
 import { useStateContext } from "./contexts/ContextProvider";
-
+Amplify.configure(awsconfig);
 const App = () => {
   const {
     setCurrentColor,
