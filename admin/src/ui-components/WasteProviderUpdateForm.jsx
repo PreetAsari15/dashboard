@@ -33,6 +33,7 @@ export default function WasteProviderUpdateForm(props) {
     address: "",
     lat: "",
     lng: "",
+    adminSub: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [image, setImage] = React.useState(initialValues.image);
@@ -49,6 +50,7 @@ export default function WasteProviderUpdateForm(props) {
   const [address, setAddress] = React.useState(initialValues.address);
   const [lat, setLat] = React.useState(initialValues.lat);
   const [lng, setLng] = React.useState(initialValues.lng);
+  const [adminSub, setAdminSub] = React.useState(initialValues.adminSub);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = wasteProviderRecord
@@ -63,6 +65,7 @@ export default function WasteProviderUpdateForm(props) {
     setAddress(cleanValues.address);
     setLat(cleanValues.lat);
     setLng(cleanValues.lng);
+    setAdminSub(cleanValues.adminSub);
     setErrors({});
   };
   const [wasteProviderRecord, setWasteProviderRecord] =
@@ -87,6 +90,7 @@ export default function WasteProviderUpdateForm(props) {
     address: [{ type: "Required" }],
     lat: [{ type: "Required" }],
     lng: [{ type: "Required" }],
+    adminSub: [],
   };
   const runValidationTasks = async (
     fieldName,
@@ -122,6 +126,7 @@ export default function WasteProviderUpdateForm(props) {
           address,
           lat,
           lng,
+          adminSub,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -186,6 +191,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -218,6 +224,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.image ?? value;
@@ -254,6 +261,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.deliveryFee ?? value;
@@ -290,6 +298,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.minDeliveryTime ?? value;
@@ -326,6 +335,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.maxDeliveryTime ?? value;
@@ -362,6 +372,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.rating ?? value;
@@ -394,6 +405,7 @@ export default function WasteProviderUpdateForm(props) {
               address: value,
               lat,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -430,6 +442,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat: value,
               lng,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.lat ?? value;
@@ -466,6 +479,7 @@ export default function WasteProviderUpdateForm(props) {
               address,
               lat,
               lng: value,
+              adminSub,
             };
             const result = onChange(modelFields);
             value = result?.lng ?? value;
@@ -479,6 +493,39 @@ export default function WasteProviderUpdateForm(props) {
         errorMessage={errors.lng?.errorMessage}
         hasError={errors.lng?.hasError}
         {...getOverrideProps(overrides, "lng")}
+      ></TextField>
+      <TextField
+        label="Admin sub"
+        isRequired={false}
+        isReadOnly={false}
+        value={adminSub}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              image,
+              deliveryFee,
+              minDeliveryTime,
+              maxDeliveryTime,
+              rating,
+              address,
+              lat,
+              lng,
+              adminSub: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.adminSub ?? value;
+          }
+          if (errors.adminSub?.hasError) {
+            runValidationTasks("adminSub", value);
+          }
+          setAdminSub(value);
+        }}
+        onBlur={() => runValidationTasks("adminSub", adminSub)}
+        errorMessage={errors.adminSub?.errorMessage}
+        hasError={errors.adminSub?.hasError}
+        {...getOverrideProps(overrides, "adminSub")}
       ></TextField>
       <Flex
         justifyContent="space-between"

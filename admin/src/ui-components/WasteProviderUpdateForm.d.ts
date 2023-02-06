@@ -23,6 +23,7 @@ export declare type WasteProviderUpdateFormInputValues = {
     address?: string;
     lat?: number;
     lng?: number;
+    adminSub?: string;
 };
 export declare type WasteProviderUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
@@ -34,6 +35,7 @@ export declare type WasteProviderUpdateFormValidationValues = {
     address?: ValidationFunction<string>;
     lat?: ValidationFunction<number>;
     lng?: ValidationFunction<number>;
+    adminSub?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type WasteProviderUpdateFormOverridesProps = {
@@ -47,6 +49,7 @@ export declare type WasteProviderUpdateFormOverridesProps = {
     address?: PrimitiveOverrideProps<TextFieldProps>;
     lat?: PrimitiveOverrideProps<TextFieldProps>;
     lng?: PrimitiveOverrideProps<TextFieldProps>;
+    adminSub?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type WasteProviderUpdateFormProps = React.PropsWithChildren<{
     overrides?: WasteProviderUpdateFormOverridesProps | undefined | null;

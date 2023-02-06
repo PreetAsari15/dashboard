@@ -1,17 +1,18 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import {SiShopware } from 'react-icons/si'
+import { AiOutlineLogout } from 'react-icons/ai'
+import { SiShopware } from 'react-icons/si'
 import { MdOutlineCancel } from 'react-icons/md'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 //Import svg - import { ReactComponent as Jotaro } from "../resources/UoR.svg"
 import Logo from '../resources/UoR.png'
-
 import { links } from '../resources/dummy'
 import { useStateContext } from '../contexts/ContextProvider'
 // import { IoMdHeartEmpty } from 'react-icons/io'
 
 
 const Sidebar = () => {
+
   const {activeMenu, setActiveMenu, screenSize} = useStateContext();
   const handleCloseSideBar = () => {
     if (activeMenu && screenSize <= 900){

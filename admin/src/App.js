@@ -109,7 +109,8 @@
 // export default App;
 import { Amplify } from "aws-amplify";
 import awsconfig from "./aws-exports";
-
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { FiSettings } from "react-icons/fi";
@@ -135,6 +136,7 @@ import {
   Editor,
   Home,
   DetailedOrder,
+  SignOut,
   OrdersV,
 } from "./pages";
 import "./App.css";
@@ -226,6 +228,9 @@ const App = () => {
                 <Route path="/color-mapping" element={<ColorMapping />} />
                 <Route path="/pyramid" element={<Pyramid />} />
                 <Route path="/stacked" element={<Stacked />} />
+
+                {/* Settings */}
+                <Route path="/signout" element={<SignOut />} />
               </Routes>
             </div>
             <Footer />
@@ -236,4 +241,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default withAuthenticator(App);

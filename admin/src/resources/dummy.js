@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AiOutlineCalendar,
+  AiOutlineLogout,
   AiOutlineShoppingCart,
   AiOutlineAreaChart,
   AiOutlineBarChart,
@@ -616,6 +617,16 @@ export const links = [
       {
         name: "stacked",
         icon: <AiOutlineBarChart />,
+      },
+    ],
+  },
+  {
+    title: "Settings",
+    links: [
+      {
+        key: "signOut",
+        name: "SignOut",
+        icon: <AiOutlineLogout />,
       },
     ],
   },

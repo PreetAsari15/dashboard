@@ -16,14 +16,16 @@ export declare type ValidationFunction<T> = (value: T, validationResponse: Valid
 export declare type UserUpdateFormInputValues = {
     name?: string;
     address?: string;
-    lat?: string;
-    lng?: string;
+    lat?: number;
+    lng?: number;
+    sub?: string;
 };
 export declare type UserUpdateFormValidationValues = {
     name?: ValidationFunction<string>;
     address?: ValidationFunction<string>;
-    lat?: ValidationFunction<string>;
-    lng?: ValidationFunction<string>;
+    lat?: ValidationFunction<number>;
+    lng?: ValidationFunction<number>;
+    sub?: ValidationFunction<string>;
 };
 export declare type PrimitiveOverrideProps<T> = Partial<T> & React.DOMAttributes<HTMLDivElement>;
 export declare type UserUpdateFormOverridesProps = {
@@ -32,6 +34,7 @@ export declare type UserUpdateFormOverridesProps = {
     address?: PrimitiveOverrideProps<TextFieldProps>;
     lat?: PrimitiveOverrideProps<TextFieldProps>;
     lng?: PrimitiveOverrideProps<TextFieldProps>;
+    sub?: PrimitiveOverrideProps<TextFieldProps>;
 } & EscapeHatchProps;
 export declare type UserUpdateFormProps = React.PropsWithChildren<{
     overrides?: UserUpdateFormOverridesProps | undefined | null;

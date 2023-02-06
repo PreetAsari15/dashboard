@@ -28,11 +28,13 @@ export default function UserUpdateForm(props) {
     address: "",
     lat: "",
     lng: "",
+    sub: "",
   };
   const [name, setName] = React.useState(initialValues.name);
   const [address, setAddress] = React.useState(initialValues.address);
   const [lat, setLat] = React.useState(initialValues.lat);
   const [lng, setLng] = React.useState(initialValues.lng);
+  const [sub, setSub] = React.useState(initialValues.sub);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
     const cleanValues = userRecord
@@ -42,6 +44,7 @@ export default function UserUpdateForm(props) {
     setAddress(cleanValues.address);
     setLat(cleanValues.lat);
     setLng(cleanValues.lng);
+    setSub(cleanValues.sub);
     setErrors({});
   };
   const [userRecord, setUserRecord] = React.useState(user);
@@ -58,6 +61,7 @@ export default function UserUpdateForm(props) {
     address: [{ type: "Required" }],
     lat: [{ type: "Required" }],
     lng: [{ type: "Required" }],
+    sub: [{ type: "Required" }],
   };
   const runValidationTasks = async (
     fieldName,
@@ -88,6 +92,7 @@ export default function UserUpdateForm(props) {
           address,
           lat,
           lng,
+          sub,
         };
         const validationResponses = await Promise.all(
           Object.keys(validations).reduce((promises, fieldName) => {
@@ -147,6 +152,7 @@ export default function UserUpdateForm(props) {
               address,
               lat,
               lng,
+              sub,
             };
             const result = onChange(modelFields);
             value = result?.name ?? value;
@@ -174,6 +180,7 @@ export default function UserUpdateForm(props) {
               address: value,
               lat,
               lng,
+              sub,
             };
             const result = onChange(modelFields);
             value = result?.address ?? value;
@@ -192,15 +199,20 @@ export default function UserUpdateForm(props) {
         label="Lat"
         isRequired={true}
         isReadOnly={false}
+        type="number"
+        step="any"
         value={lat}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
               name,
               address,
               lat: value,
               lng,
+              sub,
             };
             const result = onChange(modelFields);
             value = result?.lat ?? value;
@@ -219,15 +231,20 @@ export default function UserUpdateForm(props) {
         label="Lng"
         isRequired={true}
         isReadOnly={false}
+        type="number"
+        step="any"
         value={lng}
         onChange={(e) => {
-          let { value } = e.target;
+          let value = isNaN(parseFloat(e.target.value))
+            ? e.target.value
+            : parseFloat(e.target.value);
           if (onChange) {
             const modelFields = {
               name,
               address,
               lat,
               lng: value,
+              sub,
             };
             const result = onChange(modelFields);
             value = result?.lng ?? value;
@@ -241,6 +258,34 @@ export default function UserUpdateForm(props) {
         errorMessage={errors.lng?.errorMessage}
         hasError={errors.lng?.hasError}
         {...getOverrideProps(overrides, "lng")}
+      ></TextField>
+      <TextField
+        label="Sub"
+        isRequired={true}
+        isReadOnly={false}
+        value={sub}
+        onChange={(e) => {
+          let { value } = e.target;
+          if (onChange) {
+            const modelFields = {
+              name,
+              address,
+              lat,
+              lng,
+              sub: value,
+            };
+            const result = onChange(modelFields);
+            value = result?.sub ?? value;
+          }
+          if (errors.sub?.hasError) {
+            runValidationTasks("sub", value);
+          }
+          setSub(value);
+        }}
+        onBlur={() => runValidationTasks("sub", sub)}
+        errorMessage={errors.sub?.errorMessage}
+        hasError={errors.sub?.hasError}
+        {...getOverrideProps(overrides, "sub")}
       ></TextField>
       <Flex
         justifyContent="space-between"
