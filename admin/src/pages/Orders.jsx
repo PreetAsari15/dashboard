@@ -1,13 +1,24 @@
 // import React from 'react'
 import React from 'react';
+import {useState, useEffect} from "react"
 import { Header } from '../components';
 import { ColumnDirective, ColumnsDirective, GridComponent, Inject, Page, Sort, Filter } from '@syncfusion/ej2-react-grids';
 import {RichTextEditorComponent} from '@syncfusion/ej2-react-richtexteditor'
-import orders from '../resources/orders.json';
+// import orders from '../resources/orders.json';
 import { useNavigate } from "react-router-dom";
 import { ordersGrid } from '../resources/dummy';
+import {DataStore} from "aws-amplify"
+import {Order} from "../models"
 const Orders = () => {
+
+    const [orders, setOrders] = useState([])
     const navigate = useNavigate();
+
+    useEffect(() =>{
+      DataStore.query(Order).then(setOrders);
+    }, []);
+
+    console.log(orders);
 
     const renderOrderStatus = (orderStatus) => {
         if (orderStatus === "Accepted") {
@@ -70,6 +81,7 @@ const Orders = () => {
           <ColumnDirective field='orderID' headerText='Order ID (↑)' width='80' textAlign="Left"/>
           <ColumnDirective field='price' headerText='Price (↑)' width='80' textAlign="Left"/>
           <ColumnDirective field='deliveryAddress' headerText='Delivery Address (↑)' width='120' textAlign="Left"/>
+          <ColumnDirective field='status' headerText='Status (↑)' width='80' textAlign="Left"/>
         </ColumnsDirective>
 
         <Inject services={[Page, Sort, Filter]} />
