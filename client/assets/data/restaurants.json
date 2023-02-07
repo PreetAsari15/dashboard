@@ -41,7 +41,7 @@
   },
   {
     "id": "2",
-    "name": "Tony Roma's - C.C. Meridiano",
+    "name": "Lorras Disposal",
     "deliveryFee": 0.4,
     "minDeliveryTime": 25,
     "maxDeliveryTime": 35,
@@ -78,7 +78,7 @@
   },
   {
     "id": "3",
-    "name": "Brothers Barbecue",
+    "name": "Swacch Bharat",
     "deliveryFee": 1.4,
     "minDeliveryTime": 20,
     "maxDeliveryTime": 30,
@@ -114,7 +114,7 @@
   },
   {
     "id": "4",
-    "name": "Hamburguesa Nostra La Salle",
+    "name": "Green City",
     "deliveryFee": 0.9,
     "minDeliveryTime": 30,
     "maxDeliveryTime": 40,
