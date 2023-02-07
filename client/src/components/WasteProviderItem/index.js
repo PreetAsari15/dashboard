@@ -1,16 +1,19 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 
-const WasteProviderItem = () => {
+const WasteProviderItem = ({ wasteprovider }) => {
   return (
     <View style={styles.wasteproviderContainer}>
       <Image
         source={{
-          uri: "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg",
+          uri: wasteprovider.image,
         }}
         style={styles.image}
       />
-      <Text style={styles.title}> Think Clean Think Clean </Text>
-      <Text style={styles.subtitle}> $25.99 15-30 minutes </Text>
+      <Text style={styles.title}>{wasteprovider.name}</Text>
+      <Text style={styles.subtitle}>
+        $ ${wasteprovider.deliveryFee} ​&#8226; {wasteprovider.minDeliveryTime}-
+        {wasteprovider.maxDeliveryTime} minutes
+      </Text>
     </View>
   );
 };
@@ -25,6 +28,7 @@ const styles = StyleSheet.create({
     width: "100%",
     aspectRatio: 5 / 3,
     marginBottom: 5,
+    marginTop: 5,
   },
   title: {
     fontSize: 16,

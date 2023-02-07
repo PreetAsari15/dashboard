@@ -13,14 +13,14 @@
         "name": "Cheese Tequeños",
         "description": "6 pieces of chese with sauce.",
         "price": 6.9,
-        "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant2.jpeg"
+        "image": "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg"
       },
       {
         "id": "2",
         "name": "Hamburger La Super Cabo Burger",
         "description": "Double meat, gouda cheese, cheddar cheese, cooked ham, bacon, egg, salad and rustic potatoes.",
         "price": 8.9,
-        "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant3.jpeg"
+        "image": "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg"
       },
       {
         "name": "U.S.A. Burger",
@@ -46,7 +46,7 @@
     "minDeliveryTime": 25,
     "maxDeliveryTime": 35,
     "rating": 4.7,
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant2.jpeg",
+    "image": "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg",
     "dishes": [
       {
         "name": "Cajun Ribs",
@@ -62,7 +62,7 @@
         "name": "Carolina Honey",
         "description": "Our famous ribs marinated with our Carolina honey sauce, a mixture of honey with our original sauce. Ideal for those looking for a sweet touch. Served with French fries and coleslaw.",
         "price": 18.95,
-        "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant2.jpeg"
+        "image": "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg"
       },
       {
         "name": "Onion Rings",
@@ -83,7 +83,7 @@
     "minDeliveryTime": 20,
     "maxDeliveryTime": 30,
     "rating": 4.3,
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant3.jpeg",
+    "image": "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg",
     "dishes": [
       {
         "name": "Burger Mustang",
@@ -119,7 +119,7 @@
     "minDeliveryTime": 30,
     "maxDeliveryTime": 40,
     "rating": 4.5,
-    "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant4.jpeg",
+    "image": "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg",
     "dishes": [
       {
         "name": "English burger",
