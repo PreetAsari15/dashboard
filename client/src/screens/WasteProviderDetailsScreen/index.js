@@ -1,5 +1,6 @@
 import { View, Text, Image, FlatList, StyleSheet } from "react-native";
 import wasteproviders from "../../../assets/data/restaurants.json";
+import WasteItem from "../../components/WasteListItem";
 import { Ionicons } from "@expo/vector-icons";
 
 const wasteprovider = wasteproviders[0];
@@ -13,8 +14,8 @@ const WasteProviderDetailsPage = () => {
       />
       <Ionicons
         name="arrow-back-circle"
-        size={45}
-        color="grey"
+        size={40}
+        color="black"
         style={styles.iconContainer}
       />
       <View style={styles.container}>

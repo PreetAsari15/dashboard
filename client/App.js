@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import WasteProviderItem from "./src/components/WasteProviderItem";
 import restaurants from "./assets/data/restaurants.json";
 import HomeScreen from "./src/screens/HomeScreen";
-import WasteProviderDetailsPage from "./src/screens/WasteProviderDetails";
+import WasteProviderDetailsPage from "./src/screens/WasteProviderDetailsScreen";
 
 export default function App() {
   return (
