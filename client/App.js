@@ -3,12 +3,15 @@ import { StyleSheet, Text, View, Image, FlatList } from "react-native";
 import WasteProviderItem from "./src/components/WasteProviderItem";
 import restaurants from "./assets/data/restaurants.json";
 import HomeScreen from "./src/screens/HomeScreen";
+import WasteProviderDetailsPage from "./src/screens/WasteProviderDetails";
+
 export default function App() {
   return (
     <View style={styles.container}>
       {/* WasteProvider item */}
 
-      <HomeScreen/>
+      {/* <HomeScreen /> */}
+      <WasteProviderDetailsPage />
 
       <StatusBar style="auto" />
     </View>
