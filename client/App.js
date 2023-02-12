@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
-    padding: 10,
-    paddingVertical: 30, //temp fix for ios screen display
+    // padding: 10,
+    // paddingVertical: 30, //temp fix for ios screen display
   },
 });

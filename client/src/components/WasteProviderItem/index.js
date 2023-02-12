@@ -13,7 +13,7 @@ const WasteProviderItem = ({ wasteprovider }) => {
         <View>
           <Text style={styles.title}>{wasteprovider.name}</Text>
           <Text style={styles.subtitle}>
-            $ ${wasteprovider.deliveryFee} ​&#8226;{" "}
+            $ {wasteprovider.deliveryFee} ​&#8226;{" "}
             {wasteprovider.minDeliveryTime}-{wasteprovider.maxDeliveryTime}{" "}
             minutes
           </Text>
