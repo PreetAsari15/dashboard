@@ -4,6 +4,7 @@ import WasteProviderItem from "./src/components/WasteProviderItem";
 import restaurants from "./assets/data/restaurants.json";
 import HomeScreen from "./src/screens/HomeScreen";
 import WasteProviderDetailsPage from "./src/screens/WasteProviderDetailsScreen";
+import WasteDetailsScreen from "./src/screens/WasteDetailsScreen";
 
 export default function App() {
   return (
@@ -11,8 +12,8 @@ export default function App() {
       {/* WasteProvider item */}
 
       {/* <HomeScreen /> */}
-      <WasteProviderDetailsPage />
-
+      {/* <WasteProviderDetailsPage /> */}
+      <WasteDetailsScreen />
       <StatusBar style="auto" />
     </View>
   );
