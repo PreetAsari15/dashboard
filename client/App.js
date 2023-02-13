@@ -5,6 +5,7 @@ import restaurants from "./assets/data/restaurants.json";
 import HomeScreen from "./src/screens/HomeScreen";
 import WasteProviderDetailsPage from "./src/screens/WasteProviderDetailsScreen";
 import WasteDetailsScreen from "./src/screens/WasteDetailsScreen";
+import Basket from "./src/screens/Basket";
 
 export default function App() {
   return (
@@ -13,7 +14,9 @@ export default function App() {
 
       {/* <HomeScreen /> */}
       {/* <WasteProviderDetailsPage /> */}
-      <WasteDetailsScreen />
+      {/* <WasteDetailsScreen /> */}
+      <Basket />
+
       <StatusBar style="auto" />
     </View>
   );
