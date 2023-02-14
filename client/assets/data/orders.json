@@ -6,7 +6,7 @@
      "createdAt":"2022-04-16T18:56:21.890Z",
      "updatedAt":"2022-04-16T18:56:21.890Z",
      "orderRestaurantId":"7d7965f7-1b33-4b8c-9bac-0c22bc905030",
-     "Restaurant":{
+     "WasteProvider":{
         "id":"7d7965f7-1b33-4b8c-9bac-0c22bc905030",
         "name":"El Cabo Coffe Bar Tres De Mayo",
         "image":"https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg",
@@ -28,7 +28,7 @@
      "createdAt":"2022-04-16T18:53:32.261Z",
      "updatedAt":"2022-04-16T18:53:32.261Z",
      "orderRestaurantId":"7d7965f7-1b33-4b8c-9bac-0c22bc905030",
-     "Restaurant":{
+     "WasteProvider":{
         "id":"7d7965f7-1b33-4b8c-9bac-0c22bc905030",
         "name":"Jacobs - DuBuque",
         "image":"https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant1.jpeg",
@@ -53,7 +53,7 @@
      "_version":1,
      "_lastChangedAt":1650135409734,
      "_deleted":null,
-     "Restaurant":{
+     "WasteProvider":{
         "id":"7d7965f7-1b33-4b8c-9bac-0c22bc905030",
         "name":"Jacobs - DuBuque",
         "image":"https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg",
