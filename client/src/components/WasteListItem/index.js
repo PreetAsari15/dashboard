@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-
 const WasteItem = ({ wasteprovider }) => {
   return (
     <View style={styles.container}>

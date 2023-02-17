@@ -1,21 +1,11 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import wasteproviders from "../../../assets/data/restaurants.json";
 import { AntDesign } from "@expo/vector-icons";
+import BasketWasteItem from "../../components/BasketWasteItem";
 
 const wasteprovider = wasteproviders[0];
-const quantity = 0;
-const BasketWasteMateialItem = ({ basketWasteMaterial }) => {
-  return (
-    <View style={styles.row}>
-      <View style={styles.quantityContainer}>
-        <Text>1</Text>
-      </View>
+// const quantity = 0;
 
-      <Text style={{ fontWeight: "600" }}>{basketWasteMaterial.name}</Text>
-      <Text style={styles.price}>${basketWasteMaterial.price}</Text>
-    </View>
-  );
-};
 const Basket = () => {
   return (
     <View style={styles.page}>
@@ -25,9 +15,7 @@ const Basket = () => {
 
       <FlatList
         data={wasteprovider.wasteMaterials}
-        renderItem={({ item }) => (
-          <BasketWasteMateialItem basketWasteMaterial={item} />
-        )}
+        renderItem={({ item }) => <BasketWasteItem basketWaste={item} />}
       />
 
       <View style={styles.separator} />

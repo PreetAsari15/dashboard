@@ -7,17 +7,18 @@ import WasteProviderDetailsPage from "./src/screens/WasteProviderDetailsScreen";
 import WasteDetailsScreen from "./src/screens/WasteDetailsScreen";
 import Basket from "./src/screens/Basket";
 import OrderScreen from "./src/screens/OrdersScreen";
+import OrderDetails from "./src/screens/OrderDetails";
 
 export default function App() {
   return (
     <View style={styles.container}>
       {/* WasteProvider item */}
-
       {/* <HomeScreen /> */}
       {/* <WasteProviderDetailsPage /> */}
       {/* <WasteDetailsScreen /> */}
       {/* <Basket /> */}
-      <OrderScreen />
+      {/* <OrderScreen /> */}
+      <OrderDetails />
       <StatusBar style="auto" />
     </View>
   );
