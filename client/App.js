@@ -8,19 +8,22 @@ import WasteDetailsScreen from "./src/screens/WasteDetailsScreen";
 import Basket from "./src/screens/Basket";
 import OrderScreen from "./src/screens/OrdersScreen";
 import OrderDetails from "./src/screens/OrderDetails";
+import { NavigationContainer } from "@react-navigation/native";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      {/* WasteProvider item */}
-      {/* <HomeScreen /> */}
-      {/* <WasteProviderDetailsPage /> */}
-      {/* <WasteDetailsScreen /> */}
-      {/* <Basket /> */}
-      {/* <OrderScreen /> */}
-      <OrderDetails />
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <View style={styles.container}>
+        {/* WasteProvider item */}
+        {/* <HomeScreen /> */}
+        {/* <WasteProviderDetailsPage /> */}
+        {/* <WasteDetailsScreen /> */}
+        {/* <Basket /> */}
+        {/* <OrderScreen /> */}
+        <OrderDetails />
+        <StatusBar style="auto" />
+      </View>
+    </NavigationContainer>
   );
 }
 
