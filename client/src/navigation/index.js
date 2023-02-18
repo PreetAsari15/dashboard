@@ -18,7 +18,7 @@ const RootNavigator = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
-        name="WasteProviderDetailsScreen"
+        name="WasteProvider"
         component={WasteDetailsScreen}
         options={{ headerShown: false }}
       />

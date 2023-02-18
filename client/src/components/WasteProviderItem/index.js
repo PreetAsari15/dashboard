@@ -1,8 +1,15 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const WasteProviderItem = ({ wasteprovider }) => {
+  const navigation = useNavigation();
+
+  const onPress = () => {
+    navigation.navigate("WasteProvider");
+  };
+
   return (
-    <View style={styles.wasteproviderContainer}>
+    <Pressable onPress={onPress} style={styles.wasteproviderContainer}>
       <Image
         source={{
           uri: wasteprovider.image,
@@ -22,7 +29,7 @@ const WasteProviderItem = ({ wasteprovider }) => {
           <Text style={styles.title}>{wasteprovider.rating}</Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 
