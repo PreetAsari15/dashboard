@@ -9,14 +9,12 @@
     "image": "https://www.quantumbooks.com/wp-content/uploads/2018/08/Waste-management.jpeg",
     "wasteMaterials": [
       {
-        "id": "1",
         "name": "Plastic Materials",
         "description": "1 quantity ~kg",
         "price": 6.9,
         "image": "https://usmegastore.com/assets_images/product/image.300x300/brady/20640FLS.jpg"
       },
       {
-        "id": "2",
         "name": "Hamburger La Super Cabo Burger",
         "description": "Double meat, gouda cheese, cheddar cheese, cooked ham, bacon, egg, salad and rustic potatoes.",
         "price": 8.9,
