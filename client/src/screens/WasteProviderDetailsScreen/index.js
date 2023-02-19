@@ -4,11 +4,13 @@ import WasteListItem from "../../components/WasteListItem";
 import Header from "./Header";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "./styles";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 const wasteprovider = wasteproviders[0];
+
 const WasteProviderDetailsPage = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const id = route.params?.id;
   console.warn(id);
 
@@ -25,6 +27,7 @@ const WasteProviderDetailsPage = () => {
         )}
       />
       <Ionicons
+        onPress={() => navigation.goBack()}
         name="arrow-back-circle"
         size={40}
         color="black"

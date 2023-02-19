@@ -5,7 +5,7 @@ const WasteProviderItem = ({ wasteprovider }) => {
   const navigation = useNavigation();
 
   const onPress = () => {
-    navigation.navigate("WasteProvider");
+    navigation.navigate("WasteProvider", { id: wasteprovider.id });
   };
 
   return (
