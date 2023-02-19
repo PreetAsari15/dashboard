@@ -1,0 +1,76 @@
+enum OrderStatus {
+  NEW
+  DRIVING
+  READY_FOR_PICKUP
+  PICKED_UP
+  COMPLETED
+  ACCEPTED
+  DECLINED_BY_WASTEPROVIDER
+}
+
+type OrderService @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quantity: Int!
+  Service: Service @hasOne
+  orderID: ID! @index(name: "byOrder")
+}
+
+type Order @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  userID: ID! @index(name: "byUser")
+  WasteProvider: WasteProvider @hasOne
+  total: Float!
+  status: OrderStatus!
+  OrderServices: [OrderService] @hasMany(indexName: "byOrder", fields: ["id"])
+}
+
+type BasketService @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  quantity: Int!
+  Service: Service @hasOne
+  basketID: ID! @index(name: "byBasket")
+}
+
+type Service @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  image: String
+  description: String
+  price: Float!
+  wasteproviderID: ID! @index(name: "byWasteProvider")
+}
+
+type WasteProvider @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  image: String!
+  deliveryFee: Float!
+  minDeliveryTime: Int!
+  maxDeliveryTime: Int!
+  rating: Float
+  address: String!
+  lat: Float!
+  lng: Float!
+  Services: [Service] @hasMany(indexName: "byWasteProvider", fields: ["id"])
+  Baskets: [Basket] @hasMany(indexName: "byWasteProvider", fields: ["id"])
+  adminSub: String
+}
+
+type Basket @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  BasketServices: [BasketService] @hasMany(indexName: "byBasket", fields: ["id"])
+  userID: ID! @index(name: "byUser")
+  wasteproviderID: ID! @index(name: "byWasteProvider")
+}
+
+type User @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  address: String!
+  lat: Float!
+  lng: Float!
+  Orders: [Order] @hasMany(indexName: "byUser", fields: ["id"])
+  Baskets: [Basket] @hasMany(indexName: "byUser", fields: ["id"])
+  sub: String!
+}
+ 

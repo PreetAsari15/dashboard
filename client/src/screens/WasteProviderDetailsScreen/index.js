@@ -26,13 +26,13 @@ const WasteProviderDetailsPage = () => {
           />
         )}
       />
-      <Ionicons
+      {/* <Ionicons
         onPress={() => navigation.goBack()}
         name="arrow-back-circle"
         size={40}
         color="black"
         style={styles.iconContainer}
-      />
+      /> */}
     </View>
   );
 };
