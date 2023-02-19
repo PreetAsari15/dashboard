@@ -4,7 +4,7 @@ import HomeScreen from "../screens/HomeScreen";
 import WasteProviderDetailsPage from "../screens/WasteProviderDetailsScreen";
 import WasteDetailsScreen from "../screens/WasteDetailsScreen";
 import Basket from "../screens/Basket";
-import OrderScreen from "../screens/OrdersScreen";
+import OrdersScreen from "../screens/OrdersScreen";
 import OrderDetails from "../screens/OrderDetails";
 import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
@@ -35,7 +35,7 @@ const HomeTabs = () => {
       />
       <Tab.Screen
         name="Orders"
-        component={OrderScreen}
+        component={OrderStackNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <FontAwesome name="list-alt" size={24} color="black" />
@@ -44,7 +44,7 @@ const HomeTabs = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={OrderScreen}
+        component={OrdersScreen}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="user" size={24} color={color} />
@@ -68,6 +68,17 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen name="WasteMaterial" component={WasteDetailsScreen} />
       <HomeStack.Screen name="Basket" component={Basket} />
     </HomeStack.Navigator>
+  );
+};
+
+const OrderStack = createNativeStackNavigator();
+
+const OrderStackNavigator = () => {
+  return (
+    <OrderStack.Navigator>
+      <OrderStack.Screen name="Orders" component={OrdersScreen} />
+      <OrderStack.Screen name="Order" component={OrderDetails} />
+    </OrderStack.Navigator>
   );
 };
 
