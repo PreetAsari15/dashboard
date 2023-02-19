@@ -1,18 +1,27 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-const WasteItem = ({ wasteprovider }) => {
+import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+// WasteItem == WasteListItem
+const WasteItem = ({ wasteMaterial }) => {
+  const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <Pressable
+      onPress={() =>
+        navigation.navigate("WasteMaterial", { id: wasteMaterial.id })
+      }
+      style={styles.container}
+    >
       <View style={{ flex: 1 }}>
-        <Text style={styles.name}>{wasteprovider.name}</Text>
+        <Text style={styles.name}>{wasteMaterial.name}</Text>
         <Text style={styles.description} numberOfLines={2}>
-          {wasteprovider.description}
+          {wasteMaterial.description}
         </Text>
-        <Text style={styles.price}>${wasteprovider.price}</Text>
+        <Text style={styles.price}>${wasteMaterial.price}</Text>
       </View>
-      {wasteprovider.image && (
-        <Image source={{ uri: wasteprovider.image }} style={styles.image} />
+      {wasteMaterial.image && (
+        <Image source={{ uri: wasteMaterial.image }} style={styles.image} />
       )}
-    </View>
+    </Pressable>
   );
 };
 

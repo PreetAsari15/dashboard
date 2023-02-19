@@ -21,7 +21,7 @@ const WasteProviderDetailsPage = () => {
         data={wasteprovider.wasteMaterials}
         renderItem={({ item }) => (
           <WasteListItem
-            wasteprovider={item}
+            wasteMaterial={item}
             keyExtractor={(item) => item.name}
           />
         )}

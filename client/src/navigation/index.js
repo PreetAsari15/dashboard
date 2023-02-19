@@ -13,14 +13,8 @@ const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen
-        name="WasteProvider"
-        component={WasteProviderDetailsPage}
-        options={{ headerShown: false }}
-      />
-      {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomeTabs} />
     </Stack.Navigator>
   );
 };
@@ -29,10 +23,10 @@ const Tab = createMaterialBottomTabNavigator();
 
 const HomeTabs = () => {
   return (
-    <Tab.Navigator>
+    <Tab.Navigator barStyle={{ backgroundColor: "white" }}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={HomeStackNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <Feather name="home" size={24} color={color} />
@@ -61,4 +55,21 @@ const HomeTabs = () => {
   );
 };
 
-export default HomeTabs;
+const HomeStack = createNativeStackNavigator();
+
+const HomeStackNavigator = () => {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen name="WasteProviders" component={HomeScreen} />
+      <HomeStack.Screen
+        name="WasteProvider"
+        component={WasteProviderDetailsPage}
+      />
+      <HomeStack.Screen name="WasteMaterial" component={WasteDetailsScreen} />
+      <HomeStack.Screen name="Basket" component={Basket} />
+    </HomeStack.Navigator>
+  );
+};
+
+// export default HomeTabs;
+export default RootNavigator;
