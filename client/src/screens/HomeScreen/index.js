@@ -10,10 +10,12 @@ const HomeScreen = () => {
 
   const fetchWasteProviders = async () => {
     const results = await DataStore.query(WasteProvider);
-    console.log(results);
+    setWasteProviders(results);
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    fetchWasteProviders();
+  }, []);
 
   return (
     <View style={styles.page}>
