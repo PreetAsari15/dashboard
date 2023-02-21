@@ -39,8 +39,13 @@ const Profile = () => {
         placeholder="Longitude"
         style={styles.input}
       />
-      <Button onPress={onSave} title="Save" style={{ margin: 10 }} />
-      <Button onPress={() => Auth.signOut()} title="Sign Out" />
+      <Button onPress={onSave} title="Save" />
+      <Text
+        onPress={() => Auth.signOut()}
+        style={{ textAlign: "center", color: "red", margin: 10, fontSize: 17 }}
+      >
+        Sign Out
+      </Text>
     </SafeAreaView>
   );
 };
@@ -51,6 +56,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
+  },
+  btn: {
+    backgroundColor: "red",
   },
   input: {
     margin: 10,

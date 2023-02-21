@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 const RootNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeTabs} />
+      <Stack.Screen name="HomePage" component={HomeTabs} />
     </Stack.Navigator>
   );
 };
@@ -68,6 +68,7 @@ const HomeStackNavigator = () => {
       <HomeStack.Screen
         name="WasteProvider"
         component={WasteProviderDetailsPage}
+        options={{ headerShown: false }}
       />
       <HomeStack.Screen name="WasteMaterial" component={WasteDetailsScreen} />
       <HomeStack.Screen name="Basket" component={Basket} />
