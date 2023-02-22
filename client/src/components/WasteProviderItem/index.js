@@ -1,6 +1,9 @@
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
+const DEFAULT_IMAGE =
+  "https://transpower.ca/wp-content/themes/consultix/images/no-image-found-360x250.png";
+
 const WasteProviderItem = ({ wasteprovider }) => {
   const navigation = useNavigation();
 
@@ -12,7 +15,9 @@ const WasteProviderItem = ({ wasteprovider }) => {
     <Pressable onPress={onPress} style={styles.wasteproviderContainer}>
       <Image
         source={{
-          uri: wasteprovider.image,
+          uri: wasteprovider.image.startsWith("http")
+            ? wasteprovider.image
+            : DEFAULT_IMAGE,
         }}
         style={styles.image}
       />
@@ -20,13 +25,13 @@ const WasteProviderItem = ({ wasteprovider }) => {
         <View>
           <Text style={styles.title}>{wasteprovider.name}</Text>
           <Text style={styles.subtitle}>
-            $ {wasteprovider.deliveryFee} ​&#8226;{" "}
+            $ {wasteprovider.deliveryFee.toFixed(1)} ​&#8226;{" "}
             {wasteprovider.minDeliveryTime}-{wasteprovider.maxDeliveryTime}{" "}
             minutes
           </Text>
         </View>
         <View style={styles.rating}>
-          <Text style={styles.title}>{wasteprovider.rating}</Text>
+          <Text style={styles.title}>{wasteprovider.rating.toFixed(1)}</Text>
         </View>
       </View>
     </Pressable>

@@ -8,13 +8,14 @@ const HomeScreen = () => {
   // Fetch WasteProviders using state var
   const [wasteproviders, setWasteProviders] = useState([]);
 
-  const fetchWasteProviders = async () => {
-    const results = await DataStore.query(WasteProvider);
-    setWasteProviders(results);
-  };
-
   useEffect(() => {
-    fetchWasteProviders();
+    // const results = await DataStore.query(WasteProvider);
+    // setWasteProviders(results);
+
+    // using .then function instead of await as await cannot be used in the useEffect hook
+    DataStore.query(WasteProvider).then((results) =>
+      setWasteProviders(results)
+    );
   }, []);
 
   return (

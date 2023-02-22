@@ -1,15 +1,35 @@
-import { useState } from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import wasteproviders from "../../../assets/data/restaurants.json";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { DataStore } from "aws-amplify";
+import { Service } from "../../models";
 
-const wasteMaterial = wasteproviders[0].wasteMaterials[0];
-const quantity = 0;
+// const wasteMaterial = wasteproviders[0].wasteMaterials[0];
+// const quantity = 0;
 
 const WasteDetailsScreen = () => {
   const [quantity, setQuantity] = useState(1);
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const [service, setService] = useState(null);
+  const id = route.params.id;
+
+  useEffect(() => {
+    DataStore.query(Service, id).then(setService);
+  }, []);
+
+  if (!service) {
+    return <ActivityIndicator size="large" color="grey" />;
+  }
 
   const onMinus = () => {
     if (quantity > 1) {
@@ -20,13 +40,13 @@ const WasteDetailsScreen = () => {
     setQuantity(quantity + 1);
   };
   const getTotal = () => {
-    return (wasteMaterial.price * quantity).toFixed(2);
+    return (service.price * quantity).toFixed(2);
   };
 
   return (
     <View style={styles.page}>
-      <Text style={styles.name}>{wasteMaterial.name}</Text>
-      <Text style={styles.description}>{wasteMaterial.description}</Text>
+      <Text style={styles.name}>{service.name}</Text>
+      <Text style={styles.description}>{service.description}</Text>
       <View style={styles.separator} />
       <View style={styles.row}>
         <AntDesign
