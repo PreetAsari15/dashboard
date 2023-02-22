@@ -6,14 +6,10 @@ import {
   Pressable,
   ActivityIndicator,
 } from "react-native";
-import wasteproviders from "../../../assets/data/restaurants.json";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { DataStore } from "aws-amplify";
 import { Service } from "../../models";
-
-// const wasteMaterial = wasteproviders[0].wasteMaterials[0];
-// const quantity = 0;
 
 const WasteDetailsScreen = () => {
   const [quantity, setQuantity] = useState(1);
@@ -21,11 +17,13 @@ const WasteDetailsScreen = () => {
   const route = useRoute();
 
   const [service, setService] = useState(null);
-  const id = route.params.id;
+  const id = route.params?.id;
 
   useEffect(() => {
-    DataStore.query(Service, id).then(setService);
-  }, []);
+    if (id) {
+      DataStore.query(Service, id).then(setService);
+    }
+  }, [id]);
 
   if (!service) {
     return <ActivityIndicator size="large" color="grey" />;

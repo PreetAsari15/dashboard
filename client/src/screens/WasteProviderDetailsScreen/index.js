@@ -16,12 +16,15 @@ const WasteProviderDetailsPage = () => {
   const id = route.params?.id;
 
   useEffect(() => {
+    if (!id) {
+      return;
+    }
     DataStore.query(WasteProvider, id).then(setWasteProvider);
 
     DataStore.query(Service, (service) => service.wasteproviderID.eq(id)).then(
       setServices
     );
-  }, []);
+  }, [id]);
 
   if (!wasteprovider) {
     return (

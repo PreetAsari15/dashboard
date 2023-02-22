@@ -10,12 +10,18 @@ import ProfileScreen from "../screens/ProfileScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
+import { useAuthContext } from "../contexts/AuthContext";
 const Stack = createNativeStackNavigator();
 
 const RootNavigator = () => {
+  const { dbUser } = useAuthContext();
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="HomePage" component={HomeTabs} />
+      {dbUser ? (
+        <Stack.Screen name="HomePage" component={HomeTabs} />
+      ) : (
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+      )}
     </Stack.Navigator>
   );
 };
