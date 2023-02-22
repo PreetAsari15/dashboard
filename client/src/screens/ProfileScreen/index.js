@@ -23,7 +23,6 @@ const Profile = () => {
           sub,
         })
       );
-      console.log(user);
       setDbUser(user);
     } catch (e) {
       Alert.alert("Error", e.message);
