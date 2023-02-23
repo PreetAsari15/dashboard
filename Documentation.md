@@ -5,6 +5,8 @@
   1. Problem Statement
   2. Problem Scope 
   3. Application Benefit
+  4. Use Case Diagram
+  5. Activity Diagram
 
 
 ### 1. Problem Statement : 
@@ -13,7 +15,11 @@ Canada ranks poorly in waste management among OECD countries, but this also pres
 ### 2. Problem Scope : 
 The web-based waste management app aims to enhance the waste management process with its numerous features. The interaction between back-end and front-end web pages is shown in the picture to illustrate how various users will engage with the application.
 
-![This image of AWS Amplify Backend](images/AWSAmplifyBackend.png)
+<p align="center">
+  <img alt="This image of AWS Amplify Backend." src="images/AWSAmplifyBackend.png" width="500">
+</p>
+
+
 
 
 ### 3. Application Benefit : 
@@ -23,3 +29,30 @@ The web-based waste management app aims to enhance the waste management process 
 - SmartSweep's live tracking feature helps businesses manage waste pickups more efficiently.
 - Compared to Waste Management Inc., SmartSweep provides a more comprehensive software solution for waste management.
 - Compared to RecycleSmart, SmartSweep offers a more comprehensive solution with live tracking of waste pickups and data analysis and reporting features.
+
+### 4. Use Case Diagram : 
+
+
+<p align="center">
+  <img alt="This image of Use Case Diagram" src="images/ProjectMilestone1.png" width="750" height="500">
+</p>
+
+
+
+
+### 4. Activity Diagram :
+
+Here are two instances of an Use cases.
+
+- Use Case 1 : Scheduling Pickup
+
+<p align="center">
+  <img alt="This image of Actibity Diagram for scheduling pickup use case" src="images/ActivityDiagram1.png" width="550" height="550">
+</p>
+
+
+- Use Case 2 : Confirm Pickup
+
+<p align="center">
+  <img alt="This image of Actibity Diagram for confirm pickup use case" src="images/ActivityDiagram2.png" width="600" height="700">
+</p>
