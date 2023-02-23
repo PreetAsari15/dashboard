@@ -1,6 +1,8 @@
 ﻿# Smart Sweep
- 
-  ## Add Logo here
+<p align="center">
+  <img alt="This image of AWS Amplify Backend." src="images/logo.png" style="border-radius: 50%;" width="150" height="150">
+</p>
+  
 ##  **Table of Contents**
 - [Problem Statement](#problem-statement)
 - [Problem Scope](#problem-scope)
