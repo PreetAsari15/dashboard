@@ -10,6 +10,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { DataStore } from "aws-amplify";
 import { Service } from "../../models";
+import { useBasketContext } from "../../contexts/BasketContext";
 
 const WasteDetailsScreen = () => {
   const [quantity, setQuantity] = useState(1);
@@ -19,11 +20,18 @@ const WasteDetailsScreen = () => {
   const [service, setService] = useState(null);
   const id = route.params?.id;
 
+  const { addServiceToBasket } = useBasketContext();
+
   useEffect(() => {
     if (id) {
       DataStore.query(Service, id).then(setService);
     }
   }, [id]);
+
+  const onAddToBasket = async () => {
+    await addServiceToBasket(service, quantity);
+    navigation.goBack();
+  };
 
   if (!service) {
     return <ActivityIndicator size="large" color="grey" />;
@@ -34,9 +42,11 @@ const WasteDetailsScreen = () => {
       setQuantity(quantity - 1);
     }
   };
+
   const onPlus = () => {
     setQuantity(quantity + 1);
   };
+
   const getTotal = () => {
     return (service.price * quantity).toFixed(2);
   };
@@ -61,12 +71,9 @@ const WasteDetailsScreen = () => {
           onPress={onPlus}
         />
       </View>
-      <Pressable
-        onPress={() => navigation.navigate("Basket")}
-        style={styles.button}
-      >
+      <Pressable onPress={onAddToBasket} style={styles.button}>
         <Text style={styles.buttonText}>
-          Add {quantity} to the basket(${getTotal()})
+          Add {quantity} to the basket &#8226; ${getTotal()}
         </Text>
       </Pressable>
     </View>

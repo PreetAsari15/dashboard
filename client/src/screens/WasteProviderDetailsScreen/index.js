@@ -7,6 +7,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useState, useEffect } from "react";
 import { DataStore } from "aws-amplify";
 import { WasteProvider, Service } from "../../models";
+import { useBasketContext } from "../../contexts/BasketContext";
 
 const WasteProviderDetailsPage = () => {
   const [wasteprovider, setWasteProvider] = useState(null);
@@ -14,6 +15,8 @@ const WasteProviderDetailsPage = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const id = route.params?.id;
+
+  const { setWasteProvider: setBasketWasteProvider } = useBasketContext();
 
   useEffect(() => {
     if (!id) {
@@ -25,6 +28,10 @@ const WasteProviderDetailsPage = () => {
       setServices
     );
   }, [id]);
+
+  useEffect(() => {
+    setBasketWasteProvider(wasteprovider);
+  }, [wasteprovider]);
 
   if (!wasteprovider) {
     return (
