@@ -11,14 +11,14 @@ const BasketContextProvider = ({ children }) => {
   const [basket, setBasket] = useState(null);
   const [basketServices, setBasketServices] = useState([]);
   useEffect(() => {
-    DataStore.query(Basket, (a) =>
-      a.wasteproviderID.eq(wasteprovider.id).userID.eq(dbUser.id)
+    DataStore.query(Basket, (b) =>
+      b.wasteproviderID.eq(wasteprovider.id).userID.eq(dbUser.id)
     ).then((baskets) => setBasket(baskets[0]));
   }, [dbUser, wasteprovider]);
 
   useEffect(() => {
     if (basket) {
-      DataStore.query(BasketService, (bd) => bd.basketID.eq(basket.id)).then(
+      DataStore.query(BasketService, (bs) => bs.basketID.eq(basket.id)).then(
         setBasketServices
       );
     }

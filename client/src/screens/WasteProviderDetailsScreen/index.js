@@ -32,6 +32,8 @@ const WasteProviderDetailsPage = () => {
     if (!id) {
       return;
     }
+    setBasketWasteProvider(null);
+
     DataStore.query(WasteProvider, id).then(setWasteProvider);
 
     DataStore.query(Service, (service) => service.wasteproviderID.eq(id)).then(

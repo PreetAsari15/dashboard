@@ -13,11 +13,11 @@ import { Service } from "../../models";
 import { useBasketContext } from "../../contexts/BasketContext";
 
 const WasteDetailsScreen = () => {
+  const [service, setService] = useState(null);
   const [quantity, setQuantity] = useState(1);
+
   const navigation = useNavigation();
   const route = useRoute();
-
-  const [service, setService] = useState(null);
   const id = route.params?.id;
 
   const { addServiceToBasket } = useBasketContext();
