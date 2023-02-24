@@ -19,8 +19,8 @@ const WasteProviderHeader = ({ wasteprovider }) => {
       <View style={styles.container}>
         <Text style={styles.title}>{wasteprovider.name}</Text>
         <Text style={styles.subtitle}>
-          $ {wasteprovider.deliveryFee.toFixed(1)} ​&#8226;{" "}
-          {wasteprovider.minDeliveryTime}-{wasteprovider.maxDeliveryTime}{" "}
+          $ {wasteprovider.deliveryFee.toFixed(1)} ​&#8226;
+          {wasteprovider.minDeliveryTime}-{wasteprovider.maxDeliveryTime}
           minutes
         </Text>
 

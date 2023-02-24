@@ -1,4 +1,10 @@
-import { View, FlatList, ActivityIndicator } from "react-native";
+import {
+  View,
+  FlatList,
+  ActivityIndicator,
+  Pressable,
+  Text,
+} from "react-native";
 import WasteListItem from "../../components/WasteListItem";
 import Header from "./Header";
 import { Ionicons } from "@expo/vector-icons";
@@ -16,7 +22,11 @@ const WasteProviderDetailsPage = () => {
   const navigation = useNavigation();
   const id = route.params?.id;
 
-  const { setWasteProvider: setBasketWasteProvider } = useBasketContext();
+  const {
+    setWasteProvider: setBasketWasteProvider,
+    basket,
+    basketServices,
+  } = useBasketContext();
 
   useEffect(() => {
     if (!id) {
@@ -61,6 +71,16 @@ const WasteProviderDetailsPage = () => {
         color="black"
         style={styles.iconContainer}
       />
+      {basket && (
+        <Pressable
+          onPress={() => navigation.navigate("Basket")}
+          style={styles.button}
+        >
+          <Text style={styles.buttonText}>
+            Open basket({basketServices.length})
+          </Text>
+        </Pressable>
+      )}
     </View>
   );
 };

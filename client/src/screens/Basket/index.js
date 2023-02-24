@@ -1,21 +1,19 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import wasteproviders from "../../../assets/data/restaurants.json";
-import { AntDesign } from "@expo/vector-icons";
 import BasketWasteItem from "../../components/BasketWasteItem";
-
-const wasteprovider = wasteproviders[0];
-// const quantity = 0;
+import { useBasketContext } from "../../contexts/BasketContext";
 
 const Basket = () => {
+  const { wasteprovider, basketServices } = useBasketContext();
+
   return (
     <View style={styles.page}>
-      <Text style={styles.name}>{wasteprovider.name}</Text>
+      <Text style={styles.name}>{wasteprovider?.name}</Text>
       <Text style={{ fontWeight: "bold", fontSize: 19 }}> Your items </Text>
       <View style={styles.separator} />
 
       <FlatList
-        data={wasteprovider.wasteMaterials}
-        renderItem={({ item }) => <BasketWasteItem basketWaste={item} />}
+        data={basketServices}
+        renderItem={({ item }) => <BasketWasteItem basketService={item} />}
       />
 
       <View style={styles.separator} />

@@ -9,21 +9,30 @@ const BasketContextProvider = ({ children }) => {
   const { dbUser } = useAuthContext();
   const [wasteprovider, setWasteProvider] = useState(null);
   const [basket, setBasket] = useState(null);
-
+  const [basketServices, setBasketServices] = useState([]);
   useEffect(() => {
     DataStore.query(Basket, (a) =>
       a.wasteproviderID.eq(wasteprovider.id).userID.eq(dbUser.id)
     ).then((baskets) => setBasket(baskets[0]));
   }, [dbUser, wasteprovider]);
 
+  useEffect(() => {
+    if (basket) {
+      DataStore.query(BasketService, (bd) => bd.basketID.eq(basket.id)).then(
+        setBasketServices
+      );
+    }
+  }, [basket]);
+
   const addServiceToBasket = async (service, quantity) => {
     // fetch the existing basket or create new basket
     let theBasket = basket || (await createNewBasket());
 
     // create a BasketService item and save to DataStore
-    DataStore.save(
+    const newService = await DataStore.save(
       new BasketService({ quantity, Service: service, basketID: theBasket.id })
     );
+    setBasketServices([...basketServices, newService]);
   };
 
   const createNewBasket = async () => {
@@ -34,7 +43,15 @@ const BasketContextProvider = ({ children }) => {
     return newBasket;
   };
   return (
-    <BasketContext.Provider value={{ addServiceToBasket, setWasteProvider }}>
+    <BasketContext.Provider
+      value={{
+        addServiceToBasket,
+        setWasteProvider,
+        wasteprovider,
+        basket,
+        basketServices,
+      }}
+    >
       {children}
     </BasketContext.Provider>
   );

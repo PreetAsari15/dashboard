@@ -1,14 +1,15 @@
 import { View, Text, StyleSheet, FlatList } from "react-native";
 
-const BasketWasteItem = ({ basketWaste }) => {
+const BasketWasteItem = ({ basketService }) => {
+  console.log(basketService);
   return (
     <View style={styles.row}>
       <View style={styles.quantityContainer}>
-        <Text>1</Text>
+        <Text>{basketService.quantity}</Text>
       </View>
 
-      <Text style={{ fontWeight: "600" }}>{basketWaste.name}</Text>
-      <Text style={styles.price}>${basketWaste.price}</Text>
+      <Text style={{ fontWeight: "600" }}>{basketService.Service?.name}</Text>
+      <Text style={styles.price}>${basketService.Service?.price}</Text>
     </View>
   );
 };
