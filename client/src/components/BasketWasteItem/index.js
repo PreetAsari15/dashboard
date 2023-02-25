@@ -8,7 +8,7 @@ const BasketWasteItem = ({ basketService }) => {
         <Text>{basketService.quantity}</Text>
       </View>
 
-      <Text style={{ fontWeight: "600" }}>{basketService.Service?.name}</Text>
+      <Text style={{ fontWeight: "600" }}>{basketService.Service.name}</Text>
       <Text style={styles.price}>$ {basketService.Service.price}</Text>
     </View>
   );

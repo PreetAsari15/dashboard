@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { DataStore } from "aws-amplify";
 import { Basket, BasketService } from "../models";
 import { useAuthContext } from "./AuthContext";
+import WasteProviderDetailsPage from "../screens/WasteProviderDetailsScreen";
 
 const BasketContext = createContext({});
 
@@ -10,6 +11,13 @@ const BasketContextProvider = ({ children }) => {
   const [wasteprovider, setWasteProvider] = useState(null);
   const [basket, setBasket] = useState(null);
   const [basketServices, setBasketServices] = useState([]);
+
+  const totalPrice = basketServices.reduce(
+    (sum, basketService) =>
+      sum + basketService.quantity * basketService.Service.price,
+    wasteprovider?.deliveryFee
+  );
+
   useEffect(() => {
     DataStore.query(Basket, (b) =>
       b.wasteproviderID.eq(wasteprovider.id).userID.eq(dbUser.id)
@@ -50,6 +58,7 @@ const BasketContextProvider = ({ children }) => {
         wasteprovider,
         basket,
         basketServices,
+        totalPrice,
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import BasketWasteItem from "../../components/BasketWasteItem";
 import { useBasketContext } from "../../contexts/BasketContext";
 
 const Basket = () => {
-  const { wasteprovider, basketServices } = useBasketContext();
+  const { wasteprovider, basketServices, totalPrice } = useBasketContext();
 
   return (
     <View style={styles.page}>
@@ -19,7 +19,9 @@ const Basket = () => {
       <View style={styles.separator} />
 
       <View style={styles.button}>
-        <Text style={styles.buttonText}>Create Order</Text>
+        <Text style={styles.buttonText}>
+          Create Order $ {totalPrice.toFixed(1)}
+        </Text>
       </View>
     </View>
   );
