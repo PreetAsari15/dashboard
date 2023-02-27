@@ -10,6 +10,12 @@ OrderContextProvider = ({ children }) => {
   const { dbUser } = useAuthContext();
   const { wasteprovider, totalPrice, basketServices, basket } =
     useBasketContext();
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    DataStore.query(Order, (o) => o.userID.eq(dbUser.id)).then(setOrders);
+  }),
+    [dbUser];
 
   const createOrder = async () => {
     // create order
@@ -29,7 +35,7 @@ OrderContextProvider = ({ children }) => {
           new OrderService({
             quantity: basketService.quantity,
             orderID: newOrder.id,
-            Service: basketService.Services,
+            Service: basketService.Service,
           })
         )
       )
@@ -37,9 +43,21 @@ OrderContextProvider = ({ children }) => {
 
     // delete basket
     await DataStore.delete(basket);
+
+    setOrders([...orders, newOrder]);
+    return newOrder;
   };
+
+  const getOrder = async (id) => {
+    const order = await DataStore.query(Order, (o) => o.orderID.eq(id));
+    const orderServices = await DataStore.query(OrderService, (os) =>
+      os.orderID.eq(id)
+    );
+    return { ...order, services: orderServices };
+  };
+
   return (
-    <OrderContext.Provider value={{ createOrder }}>
+    <OrderContext.Provider value={{ createOrder, orders, getOrder }}>
       {children}
     </OrderContext.Provider>
   );

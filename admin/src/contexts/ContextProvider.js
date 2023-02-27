@@ -50,6 +50,7 @@ const initialState = {
 };
 
 export const ContextProvider = ({ children }) => {
+  // set variables
   const [screenSize, setScreenSize] = useState(undefined); // eslint-disable-line
   const [currentColor, setCurrentColor] = useState("#567189");
   const [currentMode, setCurrentMode] = useState("Light");

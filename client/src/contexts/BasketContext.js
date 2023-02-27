@@ -2,7 +2,6 @@ import { createContext, useState, useEffect, useContext } from "react";
 import { DataStore } from "aws-amplify";
 import { Basket, BasketService } from "../models";
 import { useAuthContext } from "./AuthContext";
-import WasteProviderDetailsPage from "../screens/WasteProviderDetailsScreen";
 
 const BasketContext = createContext({});
 

@@ -7,7 +7,6 @@ import Basket from "../screens/Basket";
 import OrdersScreen from "../screens/OrdersScreen";
 import OrderDetails from "../screens/OrderDetails";
 import ProfileScreen from "../screens/ProfileScreen";
-import { NavigationContainer } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
 import { useAuthContext } from "../contexts/AuthContext";
@@ -87,8 +86,12 @@ const OrderStack = createNativeStackNavigator();
 const OrderStackNavigator = () => {
   return (
     <OrderStack.Navigator>
-      <OrderStack.Screen name="Your Orders" component={OrdersScreen} />
-      <OrderStack.Screen name="Order" component={OrderDetails} />
+      <OrderStack.Screen name="Orders" component={OrdersScreen} />
+      <OrderStack.Screen
+        name="Order"
+        component={OrderDetails}
+        screenOptions={{ headerShown: false }}
+      />
     </OrderStack.Navigator>
   );
 };
