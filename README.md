@@ -12,7 +12,9 @@
 
 ## Problem Statement
 
-Canada ranks poorly in waste management among OECD countries, but this also presents opportunities for improvement. The SmartSweep project aims to develop a waste management software that allows businesses to monitor and improve their waste disposal methods. The software includes features such as data analysis, smart routing, and live tracking of waste pickups. SmartSweep falls under the domain of "Distribution Management" and "Supply Chain."
+  Many of our daily activities involve creation of waste. This leads to an alarming issue of getting rid of such waste and dumping it inefficiently. Inappropriate waste disposal can cause many problems for human health and the environment.
+
+  Canada ranks poorly in waste management among OECD countries, but this also presents opportunities for improvement. The SmartSweep project aims to develop a waste management software that allows businesses to monitor and improve their waste disposal methods. The software includes features such as data analysis, smart routing, and live tracking of waste pickups. SmartSweep falls under the domain of "Distribution Management" and "Supply Chain."
 
 
 ## Problem Scope
@@ -26,10 +28,10 @@ The web-based waste management app aims to enhance the waste management process 
 
 ## Application Benefit
 
-- SmartSweep waste management software improves efficiency through data analysis and live tracking of waste pickups.
-- SmartSweep helps businesses achieve sustainability goals by measuring progress and identifying areas for improvement.
-- SmartSweep offers a comprehensive software solution for waste management with data analysis and reporting features.
-- SmartSweep's live tracking feature helps businesses manage waste pickups more efficiently.
+- This waste management software improves efficiency through data analysis and live tracking of waste pickups.
+- It helps businesses achieve sustainability goals by measuring progress and identifying areas for improvement.
+- It offers a comprehensive software solution for waste management with data analysis and reporting features.
+- The live tracking feature helps businesses manage waste pickups more efficiently.
 - Compared to Waste Management Inc., SmartSweep provides a more comprehensive software solution for waste management.
 - Compared to RecycleSmart, SmartSweep offers a more comprehensive solution with live tracking of waste pickups and data analysis and reporting features.
 
