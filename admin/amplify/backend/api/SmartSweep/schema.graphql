@@ -27,8 +27,8 @@ type Order @model @auth(rules: [{allow: public}]) {
 type BasketService @model @auth(rules: [{allow: public}]) {
   id: ID!
   quantity: Int!
-  Service: Service @hasOne
   basketID: ID! @index(name: "byBasket")
+  Services: [Service] @manyToMany(relationName: "BasketServiceService")
 }
 
 type Service @model @auth(rules: [{allow: public}]) {
@@ -38,6 +38,7 @@ type Service @model @auth(rules: [{allow: public}]) {
   description: String
   price: Float!
   wasteproviderID: ID! @index(name: "byWasteProvider")
+  basketservices: [BasketService] @manyToMany(relationName: "BasketServiceService")
 }
 
 type WasteProvider @model @auth(rules: [{allow: public}]) {
