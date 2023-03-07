@@ -35,7 +35,7 @@ OrderContextProvider = ({ children }) => {
           new OrderService({
             quantity: basketService.quantity,
             orderID: newOrder.id,
-            Service: basketService.Service,
+            Services: basketService.Service,
           })
         )
       )
@@ -49,7 +49,7 @@ OrderContextProvider = ({ children }) => {
   };
 
   const getOrder = async (id) => {
-    const order = await DataStore.query(Order, (o) => o.orderID.eq(id));
+    const order = await DataStore.query(Order, id);
     const orderServices = await DataStore.query(OrderService, (os) =>
       os.orderID.eq(id)
     );
