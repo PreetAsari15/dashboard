@@ -9,7 +9,7 @@
     "WasteProvider": {
       "id": "7d7965f7-1b33-4b8c-9bac-0c22bc905030",
       "name": "El Cabo Coffe Bar Tres De Mayo",
-      "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant1.jpeg",
+      "image": "https://news.yale.edu/sites/default/files/styles/featured_media/public/garbage-2729608_1280.jpg?itok=YXh5bhas&c=07307e7d6a991172b9f808eb83b18804",
       "deliveryFee": 0.039448871531492236,
       "minDeliveryTime": 10,
       "maxDeliveryTime": 44,
@@ -22,8 +22,8 @@
     },
     "User": {
       "id": "1",
-      "name": "Vadim",
-      "address": "Abc 1",
+      "name": "John Doe",
+      "address": "Place",
       "lat": 37.771389,
       "lng": -122.468611
     }
@@ -38,7 +38,7 @@
     "WasteProvider": {
       "id": "7d7965f7-1b33-4b8c-9bac-0c22bc905030",
       "name": "Jacobs - DuBuque",
-      "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant2.jpeg",
+      "image": "https://news.yale.edu/sites/default/files/styles/featured_media/public/garbage-2729608_1280.jpg?itok=YXh5bhas&c=07307e7d6a991172b9f808eb83b18804",
       "deliveryFee": 0.039448871531492236,
       "minDeliveryTime": 10,
       "maxDeliveryTime": 44,
@@ -51,10 +51,10 @@
     },
     "User": {
       "id": "2",
-      "name": "Lukas",
-      "address": "Lithuania 1",
-      "lat": 46.86110499528364,
-      "lng": 28.54497769418778
+      "name": "Preet",
+      "address": "India 1",
+      "lat": 54.86110499528364,
+      "lng": 104.54497769418778
     }
   },
   {
@@ -70,7 +70,7 @@
     "WasteProvider": {
       "id": "7d7965f7-1b33-4b8c-9bac-0c22bc905030",
       "name": "Jacobs",
-      "image": "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/uber-eats/restaurant3.jpeg",
+      "image": "https://news.yale.edu/sites/default/files/styles/featured_media/public/garbage-2729608_1280.jpg?itok=YXh5bhas&c=07307e7d6a991172b9f808eb83b18804",
       "deliveryFee": 0.039448871531492236,
       "minDeliveryTime": 10,
       "maxDeliveryTime": 44,
