@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, View, Text, StyleSheet } from "react-native";
-import OrderListItem from "../../components/OrderListItem";
+import OrderListItem from "../../components/OrderListitem";
 import { useOrderContext } from "../../contexts/OrderContext";
 
 const OrderScreen = () => {

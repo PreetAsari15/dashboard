@@ -4,6 +4,7 @@ import wasteproviders from "../../../assets/data/restaurants.json";
 import BasketWasteItem from "../../components/BasketWasteItem";
 import styles from "./styles";
 import React from "react";
+import { DataStore } from "aws-amplify";
 import { useOrderContext } from "../../contexts/OrderContext";
 import { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";

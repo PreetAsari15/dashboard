@@ -12,15 +12,16 @@ const OrderStatus = {
   "DECLINED_BY_WASTEPROVIDER": "DECLINED_BY_WASTEPROVIDER"
 };
 
-const { OrderService, Service, Order, WasteProvider, Basket, BasketService, User } = initSchema(schema);
+const { OrderService, Order, BasketService, Service, WasteProvider, Basket, User, BasketServiceService } = initSchema(schema);
 
 export {
   OrderService,
-  Service,
   Order,
+  BasketService,
+  Service,
   WasteProvider,
   Basket,
-  BasketService,
   User,
+  BasketServiceService,
   OrderStatus
 };

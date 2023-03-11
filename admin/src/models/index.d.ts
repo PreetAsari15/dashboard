@@ -48,42 +48,6 @@ export declare const OrderService: (new (init: ModelInit<OrderService>) => Order
   copyOf(source: OrderService, mutator: (draft: MutableModel<OrderService>) => MutableModel<OrderService> | void): OrderService;
 }
 
-type EagerService = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Service, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly name: string;
-  readonly image?: string | null;
-  readonly description?: string | null;
-  readonly price: number;
-  readonly wasteproviderID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-type LazyService = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<Service, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly name: string;
-  readonly image?: string | null;
-  readonly description?: string | null;
-  readonly price: number;
-  readonly wasteproviderID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-}
-
-export declare type Service = LazyLoading extends LazyLoadingDisabled ? EagerService : LazyService
-
-export declare const Service: (new (init: ModelInit<Service>) => Service) & {
-  copyOf(source: Service, mutator: (draft: MutableModel<Service>) => MutableModel<Service> | void): Service;
-}
-
 type EagerOrder = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<Order, 'id'>;
@@ -120,6 +84,76 @@ export declare type Order = LazyLoading extends LazyLoadingDisabled ? EagerOrder
 
 export declare const Order: (new (init: ModelInit<Order>) => Order) & {
   copyOf(source: Order, mutator: (draft: MutableModel<Order>) => MutableModel<Order> | void): Order;
+}
+
+type EagerBasketService = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<BasketService, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly quantity: number;
+  readonly basketID: string;
+  readonly Services?: (BasketServiceService | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyBasketService = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<BasketService, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly quantity: number;
+  readonly basketID: string;
+  readonly Services: AsyncCollection<BasketServiceService>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type BasketService = LazyLoading extends LazyLoadingDisabled ? EagerBasketService : LazyBasketService
+
+export declare const BasketService: (new (init: ModelInit<BasketService>) => BasketService) & {
+  copyOf(source: BasketService, mutator: (draft: MutableModel<BasketService>) => MutableModel<BasketService> | void): BasketService;
+}
+
+type EagerService = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Service, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly image?: string | null;
+  readonly description?: string | null;
+  readonly price: number;
+  readonly wasteproviderID: string;
+  readonly basketservices?: (BasketServiceService | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyService = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Service, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name: string;
+  readonly image?: string | null;
+  readonly description?: string | null;
+  readonly price: number;
+  readonly wasteproviderID: string;
+  readonly basketservices: AsyncCollection<BasketServiceService>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Service = LazyLoading extends LazyLoadingDisabled ? EagerService : LazyService
+
+export declare const Service: (new (init: ModelInit<Service>) => Service) & {
+  copyOf(source: Service, mutator: (draft: MutableModel<Service>) => MutableModel<Service> | void): Service;
 }
 
 type EagerWasteProvider = {
@@ -204,40 +238,6 @@ export declare const Basket: (new (init: ModelInit<Basket>) => Basket) & {
   copyOf(source: Basket, mutator: (draft: MutableModel<Basket>) => MutableModel<Basket> | void): Basket;
 }
 
-type EagerBasketService = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<BasketService, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly quantity: number;
-  readonly Service?: Service | null;
-  readonly basketID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly basketServiceServiceId?: string | null;
-}
-
-type LazyBasketService = {
-  readonly [__modelMeta__]: {
-    identifier: ManagedIdentifier<BasketService, 'id'>;
-    readOnlyFields: 'createdAt' | 'updatedAt';
-  };
-  readonly id: string;
-  readonly quantity: number;
-  readonly Service: AsyncItem<Service | undefined>;
-  readonly basketID: string;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly basketServiceServiceId?: string | null;
-}
-
-export declare type BasketService = LazyLoading extends LazyLoadingDisabled ? EagerBasketService : LazyBasketService
-
-export declare const BasketService: (new (init: ModelInit<BasketService>) => BasketService) & {
-  copyOf(source: BasketService, mutator: (draft: MutableModel<BasketService>) => MutableModel<BasketService> | void): BasketService;
-}
-
 type EagerUser = {
   readonly [__modelMeta__]: {
     identifier: ManagedIdentifier<User, 'id'>;
@@ -276,4 +276,38 @@ export declare type User = LazyLoading extends LazyLoadingDisabled ? EagerUser :
 
 export declare const User: (new (init: ModelInit<User>) => User) & {
   copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
+}
+
+type EagerBasketServiceService = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<BasketServiceService, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly basketServiceId?: string | null;
+  readonly serviceId?: string | null;
+  readonly basketService: BasketService;
+  readonly service: Service;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyBasketServiceService = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<BasketServiceService, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly basketServiceId?: string | null;
+  readonly serviceId?: string | null;
+  readonly basketService: AsyncItem<BasketService>;
+  readonly service: AsyncItem<Service>;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type BasketServiceService = LazyLoading extends LazyLoadingDisabled ? EagerBasketServiceService : LazyBasketServiceService
+
+export declare const BasketServiceService: (new (init: ModelInit<BasketServiceService>) => BasketServiceService) & {
+  copyOf(source: BasketServiceService, mutator: (draft: MutableModel<BasketServiceService>) => MutableModel<BasketServiceService> | void): BasketServiceService;
 }

@@ -162,7 +162,7 @@ const App = () => {
     if (currentThemeColor && currentThemeMode) {
       setCurrentColor(currentThemeColor);
       setCurrentMode(currentThemeMode);
-    }
+    } // eslint-disable-next-line
   }, []);
 
   return (
