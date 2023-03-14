@@ -1,6 +1,6 @@
 ﻿# Smart Sweep
 <p align="center">
-  <img alt="This image of AWS Amplify Backend." src="images/logo.png" style="border-radius: 50%;" width="150" height="150">
+  <img alt="This is our logo." src="images/My_project.png" style="border-radius: 50%;" width="150" height="150">
 </p>
   
 ##  **Table of Contents**
