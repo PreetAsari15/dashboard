@@ -7,10 +7,6 @@ import OrdersScreen from "./src/screens/OrdersScreen";
 export default function App() {
   return (
     <View style={styles.container}>
-      {/* <FlatList
-        data={orders}
-        renderItem={({ item }) => <OrderItem order={item} />}
-      /> */}
       <OrdersScreen />
       <StatusBar style="auto" />
     </View>
