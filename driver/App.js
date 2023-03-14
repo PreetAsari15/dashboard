@@ -1,24 +1,12 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, FlatList, View } from "react-native";
-import orders from "./assets/data/orders.json";
-import OrderItem from "./src/component/OrderItem";
-// import OrdersScreen from "./src/screens/OrdersScreen";
-import OrdersDeliver from "./src/screens/OrderDelivery";
+import { NavigationContainer } from "@react-navigation/native";
+import Navigation from "./src/navigation";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <OrdersDeliver />
+    <NavigationContainer>
+      <Navigation />
       <StatusBar style="auto" />
-    </View>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    justifyContent: "center",
-    paddingTop: 50,
-  },
-});
