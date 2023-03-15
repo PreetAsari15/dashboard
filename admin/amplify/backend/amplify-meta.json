@@ -1,0 +1,86 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-smartsweep-staging-200745-authRole",
+      "UnauthRoleArn": "arn:aws:iam::052947143155:role/amplify-smartsweep-staging-200745-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::052947143155:role/amplify-smartsweep-staging-200745-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-smartsweep-staging-200745-deployment",
+      "UnauthRoleName": "amplify-smartsweep-staging-200745-unauthRole",
+      "StackName": "amplify-smartsweep-staging-200745",
+      "StackId": "arn:aws:cloudformation:ca-central-1:052947143155:stack/amplify-smartsweep-staging-200745/c1b45cd0-a590-11ed-b9c0-0e6c69aa0100",
+      "AmplifyAppId": "d1r4ygdq31nhis"
+    }
+  },
+  "api": {
+    "SmartSweep": {
+      "dependsOn": [],
+      "output": {
+        "authConfig": {
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "AWS_IAM"
+            }
+          ],
+          "defaultAuthentication": {
+            "apiKeyConfig": {
+              "apiKeyExpirationDays": 30,
+              "description": "api key description"
+            },
+            "authenticationType": "API_KEY"
+          }
+        },
+        "GraphQLAPIIdOutput": "2aybhix7tfcytd7zjtqoyb5ryu",
+        "GraphQLAPIEndpointOutput": "https://77ut5hljrbbhthdthbdoubhoqe.appsync-api.ca-central-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-xh23oheinze3rhrvrov4rlth5e"
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "AppSync",
+      "lastPushTimeStamp": "2023-03-15T02:23:59.651Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-smartsweep-staging-200745-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apiSmartSweep"
+      }
+    }
+  },
+  "auth": {
+    "SmartSweep": {
+      "customAuth": false,
+      "dependsOn": [],
+      "frontendAuthConfig": {
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 6,
+          "passwordPolicyCharacters": []
+        },
+        "signupAttributes": [],
+        "socialProviders": [],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerPlugin": "awscloudformation",
+      "service": "Cognito",
+      "output": {
+        "UserPoolId": "ca-central-1_ba2HbgxtB",
+        "AppClientIDWeb": "2ocmumiagnpa5oll4dsi77pheo",
+        "AppClientID": "9hn8rn6rb4tjb6i9hvru0v0hg",
+        "IdentityPoolId": "ca-central-1:b4a3be7e-df51-45df-a59e-80de3489d208",
+        "UserPoolArn": "arn:aws:cognito-idp:ca-central-1:052947143155:userpool/ca-central-1_ba2HbgxtB",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "UserPoolName": "SmartSweep"
+      },
+      "lastPushTimeStamp": "2023-03-15T02:23:59.656Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-smartsweep-staging-200745-deployment/amplify-cfn-templates/auth/SmartSweep-cloudformation-template.json",
+        "logicalId": "authSmartSweep"
+      }
+    }
+  }
+}

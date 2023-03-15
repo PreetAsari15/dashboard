@@ -1,0 +1,1444 @@
+{
+  "Parameters": {
+    "env": {
+      "Type": "String",
+      "Default": "NONE"
+    },
+    "DynamoDBModelTableReadIOPS": {
+      "Type": "Number",
+      "Default": 5,
+      "Description": "The number of read IOPS the table should support."
+    },
+    "DynamoDBModelTableWriteIOPS": {
+      "Type": "Number",
+      "Default": 5,
+      "Description": "The number of write IOPS the table should support."
+    },
+    "DynamoDBBillingMode": {
+      "Type": "String",
+      "Default": "PAY_PER_REQUEST",
+      "AllowedValues": [
+        "PAY_PER_REQUEST",
+        "PROVISIONED"
+      ],
+      "Description": "Configure @model types to create DynamoDB tables with PAY_PER_REQUEST or PROVISIONED billing modes."
+    },
+    "DynamoDBEnablePointInTimeRecovery": {
+      "Type": "String",
+      "Default": "false",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Description": "Whether to enable Point in Time Recovery on the table."
+    },
+    "DynamoDBEnableServerSideEncryption": {
+      "Type": "String",
+      "Default": "true",
+      "AllowedValues": [
+        "true",
+        "false"
+      ],
+      "Description": "Enable server side encryption powered by KMS."
+    },
+    "AppSyncApiName": {
+      "Type": "String",
+      "Default": "AppSyncSimpleTransform"
+    },
+    "authRoleName": {
+      "Type": "String"
+    },
+    "unauthRoleName": {
+      "Type": "String"
+    },
+    "S3DeploymentBucket": {
+      "Type": "String",
+      "Description": "An S3 Bucket name where assets are deployed"
+    },
+    "S3DeploymentRootKey": {
+      "Type": "String",
+      "Description": "An S3 key relative to the S3DeploymentBucket that points to the root of the deployment directory."
+    }
+  },
+  "Resources": {
+    "GraphQLAPI": {
+      "Type": "AWS::AppSync::GraphQLApi",
+      "Properties": {
+        "AuthenticationType": "API_KEY",
+        "Name": {
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "AppSyncApiName"
+              },
+              "-",
+              {
+                "Ref": "env"
+              }
+            ]
+          ]
+        },
+        "AdditionalAuthenticationProviders": [
+          {
+            "AuthenticationType": "AWS_IAM"
+          }
+        ]
+      }
+    },
+    "GraphQLAPITransformerSchema3CB2AE18": {
+      "Type": "AWS::AppSync::GraphQLSchema",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "GraphQLAPI",
+            "ApiId"
+          ]
+        },
+        "DefinitionS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/schema.graphql"
+            ]
+          ]
+        }
+      }
+    },
+    "GraphQLAPIDefaultApiKey215A6DD7": {
+      "Type": "AWS::AppSync::ApiKey",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "GraphQLAPI",
+            "ApiId"
+          ]
+        },
+        "Description": "api key description",
+        "Expires": 1680137807
+      }
+    },
+    "GraphQLAPINONEDS95A13CF0": {
+      "Type": "AWS::AppSync::DataSource",
+      "Properties": {
+        "ApiId": {
+          "Fn::GetAtt": [
+            "GraphQLAPI",
+            "ApiId"
+          ]
+        },
+        "Name": "NONE_DS",
+        "Type": "NONE",
+        "Description": "None Data Source for Pipeline functions"
+      }
+    },
+    "DataStore": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "KeySchema": [
+          {
+            "AttributeName": "ds_pk",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "ds_sk",
+            "KeyType": "RANGE"
+          }
+        ],
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "ds_pk",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "ds_sk",
+            "AttributeType": "S"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "StreamSpecification": {
+          "StreamViewType": "NEW_AND_OLD_IMAGES"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "",
+            [
+              "AmplifyDataStore-",
+              {
+                "Fn::GetAtt": [
+                  "GraphQLAPI",
+                  "ApiId"
+                ]
+              },
+              "-",
+              {
+                "Ref": "env"
+              }
+            ]
+          ]
+        },
+        "TimeToLiveSpecification": {
+          "AttributeName": "_ttl",
+          "Enabled": true
+        }
+      },
+      "UpdateReplacePolicy": "Delete",
+      "DeletionPolicy": "Delete"
+    },
+    "AmplifyDataStoreIAMRole8DE05A49": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "appsync.amazonaws.com"
+              }
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "RoleName": {
+          "Fn::Join": [
+            "",
+            [
+              "AmplifyDataStoreIAMRb752cd-",
+              {
+                "Fn::GetAtt": [
+                  "GraphQLAPI",
+                  "ApiId"
+                ]
+              },
+              "-",
+              {
+                "Ref": "env"
+              }
+            ]
+          ]
+        }
+      }
+    },
+    "DynamoDBAccess71ABE5AE": {
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "dynamodb:BatchGetItem",
+                "dynamodb:BatchWriteItem",
+                "dynamodb:PutItem",
+                "dynamodb:DeleteItem",
+                "dynamodb:GetItem",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:UpdateItem"
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Sub": [
+                    "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}",
+                    {
+                      "tablename": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "AmplifyDataStore-",
+                            {
+                              "Fn::GetAtt": [
+                                "GraphQLAPI",
+                                "ApiId"
+                              ]
+                            },
+                            "-",
+                            {
+                              "Ref": "env"
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "Fn::Sub": [
+                    "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tablename}/*",
+                    {
+                      "tablename": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "AmplifyDataStore-",
+                            {
+                              "Fn::GetAtt": [
+                                "GraphQLAPI",
+                                "ApiId"
+                              ]
+                            },
+                            "-",
+                            {
+                              "Ref": "env"
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ],
+          "Version": "2012-10-17"
+        },
+        "PolicyName": "DynamoDBAccess71ABE5AE",
+        "Roles": [
+          {
+            "Ref": "AmplifyDataStoreIAMRole8DE05A49"
+          }
+        ]
+      }
+    },
+    "OrderService": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/OrderService.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "Order": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/Order.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction92676071C": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction94FDC57BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "BasketService": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/BasketService.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction92676071C": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction94FDC57BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "Service": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/Service.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction92676071C": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction94FDC57BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "WasteProvider": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/WasteProvider.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction92676071C": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction94FDC57BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "Basket": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/Basket.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction92676071C": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction94FDC57BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "User": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/User.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction92676071C": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction94FDC57BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "BasketServiceService": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/BasketServiceService.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "DynamoDBModelTableReadIOPS": {
+            "Ref": "DynamoDBModelTableReadIOPS"
+          },
+          "DynamoDBModelTableWriteIOPS": {
+            "Ref": "DynamoDBModelTableWriteIOPS"
+          },
+          "DynamoDBBillingMode": {
+            "Ref": "DynamoDBBillingMode"
+          },
+          "DynamoDBEnablePointInTimeRecovery": {
+            "Ref": "DynamoDBEnablePointInTimeRecovery"
+          },
+          "DynamoDBEnableServerSideEncryption": {
+            "Ref": "DynamoDBEnableServerSideEncryption"
+          },
+          "referencetotransformerrootstackenv10C5A902Ref": {
+            "Ref": "env"
+          },
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServiceauth0FunctionQuerygetOrderServiceauth0FunctionAppSyncFunctionB0D1804DFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceQuerygetOrderServicepostAuth0FunctionQuerygetOrderServicepostAuth0FunctionAppSyncFunctionFF1A2F7AFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceinit0FunctionMutationcreateOrderServiceinit0FunctionAppSyncFunctionDE233007FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationcreateOrderServiceauth0FunctionMutationcreateOrderServiceauth0FunctionAppSyncFunction1EDDC2C5FunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceMutationupdateOrderServiceinit0FunctionMutationupdateOrderServiceinit0FunctionAppSyncFunction93F36DCDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptiononCreateOrderServiceauth0FunctionSubscriptiononCreateOrderServiceauth0FunctionAppSyncFunctionBB8C34CDFunctionId"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction92676071C": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceSubscriptionOnCreateOrderServiceDataResolverFnSubscriptionOnCreateOrderServiceDataResolverFnAppSyncFunction94FDC57BFunctionId"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPITransformerSchema3CB2AE18"
+      ]
+    },
+    "ConnectionStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "",
+            [
+              "https://s3.",
+              {
+                "Ref": "AWS::Region"
+              },
+              ".",
+              {
+                "Ref": "AWS::URLSuffix"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              "/",
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "/stacks/ConnectionStack.json"
+            ]
+          ]
+        },
+        "Parameters": {
+          "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+            "Fn::GetAtt": [
+              "GraphQLAPINONEDS95A13CF0",
+              "Name"
+            ]
+          },
+          "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+            "Ref": "S3DeploymentRootKey"
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceOrderServiceDataSource806C7324Name": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceOrderServiceDataSource806C7324Name"
+            ]
+          },
+          "referencetotransformerrootstackOrderServiceNestedStackOrderServiceNestedStackResource7203B89BOutputstransformerrootstackOrderServiceOrderServiceTable73FE8DB1Ref": {
+            "Fn::GetAtt": [
+              "OrderService",
+              "Outputs.transformerrootstackOrderServiceOrderServiceTable73FE8DB1Ref"
+            ]
+          },
+          "referencetotransformerrootstackauthRoleNameFB872D50Ref": {
+            "Ref": "authRoleName"
+          },
+          "referencetotransformerrootstackunauthRoleName49F3C1FERef": {
+            "Ref": "unauthRoleName"
+          },
+          "referencetotransformerrootstackServiceNestedStackServiceNestedStackResource018C3A7AOutputstransformerrootstackServiceServiceDataSource35FEC21CName": {
+            "Fn::GetAtt": [
+              "Service",
+              "Outputs.transformerrootstackServiceServiceDataSource35FEC21CName"
+            ]
+          },
+          "referencetotransformerrootstackServiceNestedStackServiceNestedStackResource018C3A7AOutputstransformerrootstackServiceServiceTable86C4B9B7Ref": {
+            "Fn::GetAtt": [
+              "Service",
+              "Outputs.transformerrootstackServiceServiceTable86C4B9B7Ref"
+            ]
+          },
+          "referencetotransformerrootstackBasketNestedStackBasketNestedStackResourceC83874A4OutputstransformerrootstackBasketBasketDataSource14CCE165Name": {
+            "Fn::GetAtt": [
+              "Basket",
+              "Outputs.transformerrootstackBasketBasketDataSource14CCE165Name"
+            ]
+          },
+          "referencetotransformerrootstackBasketNestedStackBasketNestedStackResourceC83874A4OutputstransformerrootstackBasketBasketTableB1CC5A40Ref": {
+            "Fn::GetAtt": [
+              "Basket",
+              "Outputs.transformerrootstackBasketBasketTableB1CC5A40Ref"
+            ]
+          },
+          "referencetotransformerrootstackBasketServiceNestedStackBasketServiceNestedStackResource404BE9A6OutputstransformerrootstackBasketServiceBasketServiceDataSourceE234CD5DName": {
+            "Fn::GetAtt": [
+              "BasketService",
+              "Outputs.transformerrootstackBasketServiceBasketServiceDataSourceE234CD5DName"
+            ]
+          },
+          "referencetotransformerrootstackBasketServiceNestedStackBasketServiceNestedStackResource404BE9A6OutputstransformerrootstackBasketServiceBasketServiceTable75F43849Ref": {
+            "Fn::GetAtt": [
+              "BasketService",
+              "Outputs.transformerrootstackBasketServiceBasketServiceTable75F43849Ref"
+            ]
+          },
+          "referencetotransformerrootstackOrderNestedStackOrderNestedStackResourceEB5E0067OutputstransformerrootstackOrderOrderDataSource25A54381Name": {
+            "Fn::GetAtt": [
+              "Order",
+              "Outputs.transformerrootstackOrderOrderDataSource25A54381Name"
+            ]
+          },
+          "referencetotransformerrootstackOrderNestedStackOrderNestedStackResourceEB5E0067OutputstransformerrootstackOrderOrderTableB4665187Ref": {
+            "Fn::GetAtt": [
+              "Order",
+              "Outputs.transformerrootstackOrderOrderTableB4665187Ref"
+            ]
+          },
+          "referencetotransformerrootstackWasteProviderNestedStackWasteProviderNestedStackResource5CAFD87FOutputstransformerrootstackWasteProviderWasteProviderDataSourceDD210DAFName": {
+            "Fn::GetAtt": [
+              "WasteProvider",
+              "Outputs.transformerrootstackWasteProviderWasteProviderDataSourceDD210DAFName"
+            ]
+          },
+          "referencetotransformerrootstackWasteProviderNestedStackWasteProviderNestedStackResource5CAFD87FOutputstransformerrootstackWasteProviderWasteProviderTableE5F1A3DFRef": {
+            "Fn::GetAtt": [
+              "WasteProvider",
+              "Outputs.transformerrootstackWasteProviderWasteProviderTableE5F1A3DFRef"
+            ]
+          },
+          "referencetotransformerrootstackBasketServiceServiceNestedStackBasketServiceServiceNestedStackResource12866949OutputstransformerrootstackBasketServiceServiceBasketServiceServiceDataSource76D9185EName": {
+            "Fn::GetAtt": [
+              "BasketServiceService",
+              "Outputs.transformerrootstackBasketServiceServiceBasketServiceServiceDataSource76D9185EName"
+            ]
+          },
+          "referencetotransformerrootstackBasketServiceServiceNestedStackBasketServiceServiceNestedStackResource12866949OutputstransformerrootstackBasketServiceServiceBasketServiceServiceTableBCF547F4Ref": {
+            "Fn::GetAtt": [
+              "BasketServiceService",
+              "Outputs.transformerrootstackBasketServiceServiceBasketServiceServiceTableBCF547F4Ref"
+            ]
+          }
+        }
+      },
+      "DependsOn": [
+        "Basket",
+        "BasketService",
+        "BasketServiceService",
+        "GraphQLAPITransformerSchema3CB2AE18",
+        "Order",
+        "OrderService",
+        "Service",
+        "WasteProvider"
+      ]
+    },
+    "CustomResourcesjson": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "Parameters": {
+          "AppSyncApiId": {
+            "Fn::GetAtt": [
+              "GraphQLAPI",
+              "ApiId"
+            ]
+          },
+          "AppSyncApiName": {
+            "Ref": "AppSyncApiName"
+          },
+          "env": {
+            "Ref": "env"
+          },
+          "S3DeploymentBucket": {
+            "Ref": "S3DeploymentBucket"
+          },
+          "S3DeploymentRootKey": {
+            "Ref": "S3DeploymentRootKey"
+          }
+        },
+        "TemplateURL": {
+          "Fn::Join": [
+            "/",
+            [
+              "https://s3.amazonaws.com",
+              {
+                "Ref": "S3DeploymentBucket"
+              },
+              {
+                "Ref": "S3DeploymentRootKey"
+              },
+              "stacks",
+              "CustomResources.json"
+            ]
+          ]
+        }
+      },
+      "DependsOn": [
+        "GraphQLAPI",
+        "GraphQLAPITransformerSchema3CB2AE18",
+        "OrderService",
+        "Order",
+        "BasketService",
+        "Service",
+        "WasteProvider",
+        "Basket",
+        "User",
+        "BasketServiceService",
+        "ConnectionStack"
+      ]
+    }
+  },
+  "Outputs": {
+    "GraphQLAPIKeyOutput": {
+      "Description": "Your GraphQL API ID.",
+      "Value": {
+        "Fn::GetAtt": [
+          "GraphQLAPIDefaultApiKey215A6DD7",
+          "ApiKey"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Ref": "AWS::StackName"
+              },
+              "GraphQLApiKey"
+            ]
+          ]
+        }
+      }
+    },
+    "GraphQLAPIIdOutput": {
+      "Description": "Your GraphQL API ID.",
+      "Value": {
+        "Fn::GetAtt": [
+          "GraphQLAPI",
+          "ApiId"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Ref": "AWS::StackName"
+              },
+              "GraphQLApiId"
+            ]
+          ]
+        }
+      }
+    },
+    "GraphQLAPIEndpointOutput": {
+      "Description": "Your GraphQL API endpoint.",
+      "Value": {
+        "Fn::GetAtt": [
+          "GraphQLAPI",
+          "GraphQLUrl"
+        ]
+      },
+      "Export": {
+        "Name": {
+          "Fn::Join": [
+            ":",
+            [
+              {
+                "Ref": "AWS::StackName"
+              },
+              "GraphQLApiEndpoint"
+            ]
+          ]
+        }
+      }
+    }
+  }
+}

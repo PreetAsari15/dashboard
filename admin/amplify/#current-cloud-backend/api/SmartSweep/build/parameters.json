@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "SmartSweep",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "S3DeploymentBucket": "amplify-smartsweep-staging-200745-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/7c92ea41c464a7c80536117f16e8e624b67b39a1"
+}
