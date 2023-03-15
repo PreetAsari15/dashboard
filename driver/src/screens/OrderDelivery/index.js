@@ -1,12 +1,17 @@
-import { View, Text, useWindowDimensions } from "react-native";
-import { useRef, useMemo } from "react";
+import {
+  View,
+  Text,
+  useWindowDimensions,
+  ActivityIndicator,
+} from "react-native";
+import { useRef, useMemo, useEffect, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { FontAwesome5, Fontisto } from "@expo/vector-icons";
 import orders from "../../../assets/data/orders.json";
 import MapView, { Marker } from "react-native-maps";
-// import * as Location from "expo-location";
+import * as Location from "expo-location";
 import styles from "./styles";
-
+import { Entypo } from "@expo/vector-icons";
 const order = orders[0];
 
 const OrderDelivery = () => {
@@ -15,7 +20,26 @@ const OrderDelivery = () => {
   const bottomSheetRef = useRef(null);
   const { width, height } = useWindowDimensions();
   const snapPoints = useMemo(() => ["12%", "95%"], []);
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (!status === "granted") {
+        console.log("Nonono");
+        return;
+      }
+
+      let location = await Location.getCurrentPositionAsync();
+      setDriverLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+    })();
+  }, []);
+
+  if (!driverLocation) {
+    return <ActivityIndicator size={"large"} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -23,10 +47,33 @@ const OrderDelivery = () => {
         style={{ height, width }}
         showsUserLocation
         followsUserLocation
-        // initialRegion={{
-        //   latitude: "",
-        // }}
-      />
+        initialCamera={{
+          latitude: driverLocation.latitude,
+          longitude: driverLocation.longitude,
+          longitudeDelta: 1,
+          latitudeDelta: 1,
+        }}
+      >
+        {/* One marker for wasteprovider and one for user */}
+        <Marker
+          coordinate={{
+            latitude: order.WasteProvider.lat,
+            longitude: order.WasteProvider.lng,
+          }}
+          title={order.WasteProvider.name}
+          description={order.WasteProvider.address}
+        >
+          <Entypo name="shop" size={24} color="black" />
+        </Marker>
+
+        <Marker
+          coordinate={{ latitude: order.User.lat, longitude: order.User.lng }}
+          title={order.User.name}
+          description={order.User.address}
+        >
+          <FontAwesome5 name="truck-moving" size={30} color="black" />
+        </Marker>
+      </MapView>
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
