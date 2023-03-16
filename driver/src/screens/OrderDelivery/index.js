@@ -43,6 +43,21 @@ const OrderDelivery = () => {
         longitude: location.coords.longitude,
       });
     })();
+
+    const foregroundSubscription = Location.watchPositionAsync(
+      {
+        accuracy: Location.Accuracy.Balanced,
+        distanceInterval: 100,
+      },
+      (updatedLocation) => {
+        // We are only updating the setDriverLocation because everytime the driverLocation is updated it will re-render the remaning time and kms
+        setDriverLocation({
+          latitude: updatedLocation.coords.latitude,
+          longitude: updatedLocation.coords.longitude,
+        });
+      }
+    );
+    return foregroundSubscription;
   }, []);
 
   if (!driverLocation) {
@@ -74,7 +89,7 @@ const OrderDelivery = () => {
           ]}
           strokeColor="#3FC060"
           // DONOT PUSH API KEY TO REPO
-          apikey="Enter API KEY HERE"
+          apikey="Paste API Key Here"
           onReady={(result) => {
             setTotalMinutes(result.duration);
             setTotalKm(result.distance);
@@ -125,7 +140,7 @@ const OrderDelivery = () => {
             style={{ marginHorizontal: 10 }}
           />
           <Text style={{ fontSize: 25, letterSpacing: 1 }}>
-            {totalKm.toFixed(3)} Kms
+            {totalKm.toFixed(2)} Kms
           </Text>
         </View>
         <View style={styles.deliveryDetailsContainer}>
