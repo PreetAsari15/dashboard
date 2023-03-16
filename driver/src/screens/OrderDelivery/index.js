@@ -22,6 +22,8 @@ const order = orders[0];
 
 const OrderDelivery = () => {
   const [driverLocation, setDriverLocation] = useState(null);
+  const [totalMinutes, setTotalMinutes] = useState(0);
+  const [totalKm, setTotalKm] = useState(0);
 
   const bottomSheetRef = useRef(null);
   const { width, height } = useWindowDimensions();
@@ -53,19 +55,30 @@ const OrderDelivery = () => {
         style={{ height, width }}
         showsUserLocation
         followsUserLocation
-        initialCamera={{
+        initialRegion={{
           latitude: driverLocation.latitude,
           longitude: driverLocation.longitude,
-          longitudeDelta: 1,
-          latitudeDelta: 1,
+          longitudeDelta: 0.7,
+          latitudeDelta: 0.7,
         }}
       >
         <MapViewDirections
           origin={driverLocation}
           destination={{ latitude: order.User.lat, longitude: order.User.lng }}
           strokeWidth={10}
+          waypoints={[
+            {
+              latitude: order.WasteProvider.lat,
+              longitude: order.WasteProvider.lng,
+            },
+          ]}
           strokeColor="#3FC060"
-          apikey=""
+          // DONOT PUSH API KEY TO REPO
+          apikey="Enter API KEY HERE"
+          onReady={(result) => {
+            setTotalMinutes(result.duration);
+            setTotalKm(result.distance);
+          }}
         />
 
         {/* One marker for wasteprovider and one for user */}
@@ -102,14 +115,18 @@ const OrderDelivery = () => {
         handleIndicatorStyle={styles.handleIndicator}
       >
         <View style={styles.handleIndicatorContainer}>
-          <Text style={styles.routeDetailsText}>14 min</Text>
+          <Text style={styles.routeDetailsText}>
+            {totalMinutes.toFixed(0)} min
+          </Text>
           <FontAwesome5
             name="shopping-bag"
             size={30}
             color="#3FC060"
             style={{ marginHorizontal: 10 }}
           />
-          <Text style={{ fontSize: 25, letterSpacing: 1 }}>5 Kms</Text>
+          <Text style={{ fontSize: 25, letterSpacing: 1 }}>
+            {totalKm.toFixed(3)} Kms
+          </Text>
         </View>
         <View style={styles.deliveryDetailsContainer}>
           <Text style={styles.wasteProviderName}>
