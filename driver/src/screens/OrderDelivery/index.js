@@ -6,12 +6,18 @@ import {
 } from "react-native";
 import { useRef, useMemo, useEffect, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { FontAwesome5, Fontisto } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  Entypo,
+  FontAwesome5,
+  Fontisto,
+} from "@expo/vector-icons";
 import orders from "../../../assets/data/orders.json";
 import MapView, { Marker } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 import * as Location from "expo-location";
+
 import styles from "./styles";
-import { Entypo } from "@expo/vector-icons";
 const order = orders[0];
 
 const OrderDelivery = () => {
@@ -54,6 +60,14 @@ const OrderDelivery = () => {
           latitudeDelta: 1,
         }}
       >
+        <MapViewDirections
+          origin={driverLocation}
+          destination={{ latitude: order.User.lat, longitude: order.User.lng }}
+          strokeWidth={10}
+          strokeColor="#3FC060"
+          apikey=""
+        />
+
         {/* One marker for wasteprovider and one for user */}
         <Marker
           coordinate={{
@@ -63,7 +77,11 @@ const OrderDelivery = () => {
           title={order.WasteProvider.name}
           description={order.WasteProvider.address}
         >
-          <Entypo name="shop" size={24} color="black" />
+          <View
+            style={{ backgroundColor: "green", padding: 5, borderRadius: 15 }}
+          >
+            <Entypo name="shop" size={24} color="white" />
+          </View>
         </Marker>
 
         <Marker
@@ -71,7 +89,11 @@ const OrderDelivery = () => {
           title={order.User.name}
           description={order.User.address}
         >
-          <FontAwesome5 name="truck-moving" size={30} color="black" />
+          <View
+            style={{ backgroundColor: "green", padding: 5, borderRadius: 15 }}
+          >
+            <MaterialCommunityIcons name="dump-truck" size={30} color="white" />
+          </View>
         </Marker>
       </MapView>
       <BottomSheet
