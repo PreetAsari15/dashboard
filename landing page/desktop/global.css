@@ -1,0 +1,37 @@
+:root {
+  /* fonts */
+  --font-outfit: Outfit;
+  --font-jost: Jost;
+  --font-dm-serif-display: "DM Serif Display";
+
+  /* font sizes */
+  --font-size-sm: 1.13rem;
+  --font-size-base: 1.38rem;
+  --font-size-lg: 2rem;
+  --font-size-xl: 2.5rem;
+  --font-size-2xl: 3.75rem;
+
+  /* Colors */
+  --color-green: #008000;
+  --color-black: #000;
+  --color-white: #fff;
+  --color-darkslategray: #292f36;
+  --color-dimgray: #4d5053;
+
+  /* Gaps */
+  --gap-xs: 0.56rem;
+  --gap-sm: 0.63rem;
+  --gap-md: 0.75rem;
+  --gap-lg: 1.25rem;
+  --gap-xl: 3.25rem;
+
+  /* Paddings */
+  --padding-sm: 1.63rem;
+  --padding-md: 3rem;
+  --padding-lg: 3.06rem;
+
+  /* border radiuses */
+  --br-sm: 18px;
+  --br-md: 50px;
+  --br-lg: 80px;
+}
