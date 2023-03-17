@@ -1,3 +1,17 @@
+enum TransportationModes {
+  TRUCK
+  LORRY
+}
+
+type Courier @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  name: String!
+  sub: String!
+  lat: String
+  lng: String
+  transportationMode: TransportationModes!
+}
+
 enum OrderStatus {
   NEW
   DRIVING
@@ -22,6 +36,7 @@ type Order @model @auth(rules: [{allow: public}]) {
   total: Float!
   status: OrderStatus!
   OrderServices: [OrderService] @hasMany(indexName: "byOrder", fields: ["id"])
+  Courier: Courier @hasOne
 }
 
 type BasketService @model @auth(rules: [{allow: public}]) {
