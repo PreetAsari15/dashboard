@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  line-height: normal;
+}
+
+:root {
+  /* fonts */
+  --font-outfit: Outfit;
+  --font-jost: Jost;
+  --font-dm-serif-display: "DM Serif Display";
+
+  /* font sizes */
+  --font-size-xs: 0.75rem;
+  --font-size-mini: 0.94rem;
+  --font-size-9xs: 0.25rem;
+  --font-size-5xs: 0.5rem;
+  --font-size-3xs: 0.63rem;
+  --font-size-8xs: 0.31rem;
+  --font-size-xl: 1.25rem;
+  --font-size-5xl: 1.5rem;
+  --font-size-6xs: 0.44rem;
+  --font-size-sm: 0.88rem;
+  --font-size-41xl: 3.75rem;
+  --font-size-lg: 1.13rem;
+  --font-size-3xl: 1.38rem;
+  --font-size-13xl: 2rem;
+  --font-size-21xl: 2.5rem;
+
+  /* Colors */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-green: #008000;
+  --color-dimgray: #4d5053;
+  --color-darkslategray: #292f36;
+
+  /* Gaps */
+  --gap-3xs-4: 0.59rem;
+  --gap-smi-5: 0.78rem;
+  --gap-2xs-4: 0.65rem;
+  --gap-4xs: 0.56rem;
+  --gap-33xl: 3.25rem;
+  --gap-xs: 0.75rem;
+  --gap-xl: 1.25rem;
+  --gap-3xs: 0.63rem;
+
+  /* Paddings */
+  --padding-7xl: 1.63rem;
+  --padding-30xl: 3.06rem;
+  --padding-29xl: 3rem;
+  --padding-8xl-1: 1.69rem;
+  --padding-32xl: 3.19rem;
+  --padding-31xl: 3.13rem;
+
+  /* border radiuses */
+  --br-lg: 18px;
+  --br-41xl: 60px;
+  --br-33xl-1: 52.1px;
+  --br-lg-8: 18.8px;
+  --br-61xl: 80px;
+  --br-31xl: 50px;
+}
