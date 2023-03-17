@@ -1,0 +1,20 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-smartsweep-staging-200745-authRole",
+      "UnauthRoleArn": "arn:aws:iam::052947143155:role/amplify-smartsweep-staging-200745-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::052947143155:role/amplify-smartsweep-staging-200745-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-smartsweep-staging-200745-deployment",
+      "UnauthRoleName": "amplify-smartsweep-staging-200745-unauthRole",
+      "StackName": "amplify-smartsweep-staging-200745",
+      "StackId": "arn:aws:cloudformation:ca-central-1:052947143155:stack/amplify-smartsweep-staging-200745/c1b45cd0-a590-11ed-b9c0-0e6c69aa0100",
+      "AmplifyAppId": "d1r4ygdq31nhis"
+    },
+    "categories": {
+      "auth": {
+        "SmartSweep": {}
+      }
+    }
+  }
+}

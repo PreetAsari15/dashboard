@@ -41,7 +41,7 @@ const OrdersScreen = () => {
           </Marker>
         ))}
       </MapView>
-      <BottomSheet ref={bottomSheetRef} snapPoints={snapPoints}>
+      <BottomSheet index={1} ref={bottomSheetRef} snapPoints={snapPoints}>
         <View style={{ alignItems: "center", marginBottom: 30 }}>
           <Text
             style={{
