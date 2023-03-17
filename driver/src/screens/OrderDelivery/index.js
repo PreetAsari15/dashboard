@@ -3,6 +3,7 @@ import {
   Text,
   useWindowDimensions,
   ActivityIndicator,
+  Pressable,
 } from "react-native";
 import { useRef, useMemo, useEffect, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
@@ -20,12 +21,35 @@ import * as Location from "expo-location";
 import styles from "./styles";
 const order = orders[0];
 
+const deliveryLocation = {
+  latitude: order.WasteProvider.lat,
+  longitude: order.WasteProvider.lng,
+};
+const userLocation = {
+  latitude: order.User.lat,
+  longitude: order.User.lng,
+};
+
+// ENUM for rendering orders
+// Drivers can only see the order if the status is "READY_FOR_PICKUP"
+// Once the pickup is completed or the lorry leaves the pickup place, the order is completed
+const ORDER_STATUSES = {
+  READY_FOR_PICKUP: "READY_FOR_PICKUP",
+  ACCEPTED: "ACCEPTED",
+  PICKED_UP: "PICKED_UP",
+};
+
 const OrderDelivery = () => {
   const [driverLocation, setDriverLocation] = useState(null);
   const [totalMinutes, setTotalMinutes] = useState(0);
   const [totalKm, setTotalKm] = useState(0);
+  const [deliveryStatus, setDeliveryStatus] = useState(
+    ORDER_STATUSES.READY_FOR_PICKUP
+  );
+  const [isDriverClose, setIsDriverClose] = useState(false);
 
   const bottomSheetRef = useRef(null);
+  const mapRef = useRef(null);
   const { width, height } = useWindowDimensions();
   const snapPoints = useMemo(() => ["12%", "95%"], []);
 
@@ -64,33 +88,85 @@ const OrderDelivery = () => {
     return <ActivityIndicator size={"large"} />;
   }
 
+  const onButtonpressed = () => {
+    if (deliveryStatus === ORDER_STATUSES.READY_FOR_PICKUP) {
+      bottomSheetRef.current?.collapse();
+      mapRef.current.animateToRegion({
+        latitude: driverLocation.latitude,
+        longitude: driverLocation.longitude,
+        latitudeDelta: 3.0,
+        longitudeDelta: 3.0,
+      });
+      setDeliveryStatus(ORDER_STATUSES.ACCEPTED);
+    }
+    if (deliveryStatus === ORDER_STATUSES.ACCEPTED) {
+      setDeliveryStatus(ORDER_STATUSES.PICKED_UP);
+    }
+    if (deliveryStatus === ORDER_STATUSES.PICKED_UP) {
+      console.warn("Delivery Finished");
+    }
+  };
+
+  const renderButtonTitle = () => {
+    if (deliveryStatus === ORDER_STATUSES.READY_FOR_PICKUP) {
+      return "Accept Waste Pickup";
+    }
+    if (deliveryStatus === ORDER_STATUSES.ACCEPTED) {
+      return "Pick-Up Waste";
+    }
+    if (deliveryStatus === ORDER_STATUSES.PICKED_UP) {
+      return "Delivery Completed";
+    }
+  };
+
+  // only allow pickup if the driver is in proximity of the pickup
+  const isButtonDisabled = () => {
+    if (deliveryStatus === ORDER_STATUSES.READY_FOR_PICKUP) {
+      return false;
+    }
+    if (deliveryStatus === ORDER_STATUSES.ACCEPTED && isDriverClose) {
+      return false;
+    }
+    if (deliveryStatus === ORDER_STATUSES.PICKED_UP && isDriverClose) {
+      return false;
+    }
+    return true;
+  };
+
   return (
     <View style={styles.container}>
       <MapView
+        ref={mapRef}
         style={{ height, width }}
         showsUserLocation
         followsUserLocation
         initialRegion={{
           latitude: driverLocation.latitude,
           longitude: driverLocation.longitude,
-          longitudeDelta: 0.7,
-          latitudeDelta: 0.7,
+          longitudeDelta: 3.0,
+          latitudeDelta: 3.0,
         }}
       >
         <MapViewDirections
           origin={driverLocation}
-          destination={{ latitude: order.User.lat, longitude: order.User.lng }}
+          destination={
+            deliveryStatus === ORDER_STATUSES.ACCEPTED
+              ? userLocation
+              : deliveryLocation
+          }
           strokeWidth={10}
-          waypoints={[
-            {
-              latitude: order.WasteProvider.lat,
-              longitude: order.WasteProvider.lng,
-            },
-          ]}
+          waypoints={
+            deliveryStatus === ORDER_STATUSES.READY_FOR_PICKUP
+              ? [userLocation]
+              : []
+          }
           strokeColor="#3FC060"
           // DONOT PUSH API KEY TO REPO
-          apikey="Paste API Key Here"
+          // apikey="Paste API Key Here"
           onReady={(result) => {
+            if (result <= 0.1) {
+              setIsDriverClose(true);
+            }
             setTotalMinutes(result.duration);
             setTotalKm(result.distance);
           }}
@@ -108,7 +184,7 @@ const OrderDelivery = () => {
           <View
             style={{ backgroundColor: "green", padding: 5, borderRadius: 15 }}
           >
-            <Entypo name="shop" size={24} color="white" />
+            <MaterialCommunityIcons name="dump-truck" size={30} color="white" />
           </View>
         </Marker>
 
@@ -120,7 +196,7 @@ const OrderDelivery = () => {
           <View
             style={{ backgroundColor: "green", padding: 5, borderRadius: 15 }}
           >
-            <MaterialCommunityIcons name="dump-truck" size={30} color="white" />
+            <Entypo name="home" size={24} color="white" />
           </View>
         </Marker>
       </MapView>
@@ -190,9 +266,20 @@ const OrderDelivery = () => {
             <Text style={styles.orderItemText}>Hazardous Services x3</Text>
           </View>
         </View>
-        <View style={styles.buttonContainer}>
-          <Text style={styles.buttonText}>Accept Order</Text>
-        </View>
+        <Pressable
+          style={styles.buttonContainer}
+          onPress={onButtonpressed}
+          disabled={isButtonDisabled()}
+        >
+          <Text
+            style={{
+              ...styles.buttonText,
+              backgroundColor: isButtonDisabled() ? "grey" : "#3FC060",
+            }}
+          >
+            {renderButtonTitle()}
+          </Text>
+        </Pressable>
       </BottomSheet>
     </View>
   );
