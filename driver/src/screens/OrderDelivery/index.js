@@ -12,10 +12,12 @@ import {
   Entypo,
   FontAwesome5,
   Fontisto,
+  Ionicons,
 } from "@expo/vector-icons";
 import orders from "../../../assets/data/orders.json";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
+import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
 
 import styles from "./styles";
@@ -52,6 +54,7 @@ const OrderDelivery = () => {
   const mapRef = useRef(null);
   const { width, height } = useWindowDimensions();
   const snapPoints = useMemo(() => ["12%", "95%"], []);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
@@ -100,10 +103,13 @@ const OrderDelivery = () => {
       setDeliveryStatus(ORDER_STATUSES.ACCEPTED);
     }
     if (deliveryStatus === ORDER_STATUSES.ACCEPTED) {
+      bottomSheetRef.current?.collapse();
       setDeliveryStatus(ORDER_STATUSES.PICKED_UP);
     }
     if (deliveryStatus === ORDER_STATUSES.PICKED_UP) {
-      console.warn("Delivery Finished");
+      bottomSheetRef.current?.collapse();
+      navigation.goBack();
+      console.warn("Waste Delivery Finished");
     }
   };
 
@@ -163,6 +169,7 @@ const OrderDelivery = () => {
           strokeColor="#3FC060"
           // DONOT PUSH API KEY TO REPO
           // apikey="Paste API Key Here"
+          apikey="AIzaSyCxvk-h_L37Tsk0bupRpRU5AjuqEuOwLx0"
           onReady={(result) => {
             if (result <= 0.1) {
               setIsDriverClose(true);
@@ -200,6 +207,13 @@ const OrderDelivery = () => {
           </View>
         </Marker>
       </MapView>
+      <Ionicons
+        onPress={() => navigation.goBack()}
+        name="arrow-back-circle"
+        size={45}
+        color="black"
+        style={{ top: 40, left: 15, position: "absolute" }}
+      />
       <BottomSheet
         ref={bottomSheetRef}
         snapPoints={snapPoints}
