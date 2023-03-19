@@ -206,7 +206,7 @@ const App = () => {
               <Routes>
                 {/* dashboard  */}
                 <Route path="/" element={<Home />} />
-                <Route path="/ecommerce" element={<Home />} />
+                <Route path="/home" element={<Home />} />
 
                 {/* pages  */}
                 <Route path="/orders" element={<Orders />} />

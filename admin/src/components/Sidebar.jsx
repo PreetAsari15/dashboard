@@ -5,7 +5,7 @@ import { SiShopware } from 'react-icons/si'
 import { MdOutlineCancel } from 'react-icons/md'
 import { TooltipComponent } from '@syncfusion/ej2-react-popups'
 //Import svg - import { ReactComponent as Jotaro } from "../resources/UoR.svg"
-import Logo from '../resources/UoR.png'
+import Logo from '../resources/logo.png'
 import { links } from '../resources/dummy'
 import { useStateContext } from '../contexts/ContextProvider'
 // import { IoMdHeartEmpty } from 'react-icons/io'
@@ -29,7 +29,7 @@ const Sidebar = () => {
         className="items-center mt-4 ml-3 gap-3 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900">
           {/* <SiShopware /> <span>Shoppy</span> */}
           {/* <Jotaro className="w-50 h-50" /> <span>Shoppy</span> */}
-          <img src={Logo} className="w-20 h-50" alt="Didn't work init" />
+          <img src={Logo} className="w-30 h-40"  alt="Didn't work init" />
         </Link>
         <TooltipComponent content="Menu" position="BottomCenter">
           <button type="button" onClick={() => setActiveMenu((prevActiveMenu) => !prevActiveMenu)}
