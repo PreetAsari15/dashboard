@@ -46,7 +46,7 @@ const Profile = () => {
 
   const createCourier = async () => {
     try {
-      const courier = DataStore.save(
+      const courier = await DataStore.save(
         new Courier({
           name,
           sub,
@@ -68,7 +68,6 @@ const Profile = () => {
         placeholder="Name"
         style={styles.input}
       />
-
       <View style={{ flexDirection: "row" }}>
         <Pressable
           onPress={() => setTransportationMode(TransportationModes.TRUCK)}
@@ -103,7 +102,6 @@ const Profile = () => {
           <FontAwesome5 name="car" size={40} color="black" />
         </Pressable>
       </View>
-
       <Button onPress={onSave} title="Save" />
       <Text
         onPress={() => Auth.signOut()}
