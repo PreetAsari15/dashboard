@@ -45,9 +45,9 @@ const Orders = () => {
         },
         {
           title: "Price",
-          dataIndex: "price",
-          key: "price",
-          render: (price) => `${price} $`,
+          dataIndex: "total",
+          key: "total",
+          render: (total) => `${total} $`,
         },
         {
           title: "Status",
