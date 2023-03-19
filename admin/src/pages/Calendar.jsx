@@ -40,7 +40,19 @@ const Scheduler = () => {
         <table
           style={{ width: '100%', background: 'white' }}
         >
-          
+          <tbody>
+            <tr style={{ height: '50px' }}>
+              <td style={{ width: '100%' }}>
+                <DatePickerComponent
+                  value={new Date(2021, 0, 10)}
+                  showClearButton={false}
+                  placeholder="Current Date"
+                  floatLabelType="Always"
+                  change={change}
+                />
+              </td>
+            </tr>
+          </tbody>
         </table>
       </PropertyPane>
     </div>
