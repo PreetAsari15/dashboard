@@ -21,7 +21,7 @@ export const schema = {
                     "name": "sub",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "lat": {
@@ -1037,5 +1037,5 @@ export const schema = {
     },
     "nonModels": {},
     "codegenVersion": "3.3.6",
-    "version": "b4a7fb87084c3b935067a77c5d3cdf3a"
+    "version": "a9af9c8c1dc39107b09958e2200af08f"
 };

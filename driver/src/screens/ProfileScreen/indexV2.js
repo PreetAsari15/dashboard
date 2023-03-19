@@ -13,7 +13,11 @@ import { Auth, DataStore } from "aws-amplify";
 import { Courier, TransportationModes } from "../../models";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import {
+  MaterialCommunityIcons,
+  MaterialIcons,
+  FontAwesome5,
+} from "@expo/vector-icons";
 
 const Profile = () => {
   const { dbCourier, sub, setDbCourier } = useAuthContext();
@@ -46,7 +50,7 @@ const Profile = () => {
 
   const createCourier = async () => {
     try {
-      const courier = DataStore.save(
+      const courier = await DataStore.save(
         new Courier({
           name,
           sub,
@@ -114,13 +118,15 @@ const Profile = () => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   title: {
     fontSize: 30,
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
+  },
+  btn: {
+    backgroundColor: "red",
   },
   input: {
     margin: 10,
