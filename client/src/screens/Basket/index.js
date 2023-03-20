@@ -2,10 +2,17 @@ import { View, Text, StyleSheet, FlatList, Pressable } from "react-native";
 import BasketWasteItem from "../../components/BasketWasteItem";
 import { useBasketContext } from "../../contexts/BasketContext";
 import { useOrderContext } from "../../contexts/OrderContext";
-
+import { useNavigation } from "@react-navigation/native";
 const Basket = () => {
   const { wasteprovider, basketServices, totalPrice } = useBasketContext();
   const { createOrder } = useOrderContext();
+  const navigation = useNavigation();
+
+  const onCreateOrder = async () => {
+    await createOrder();
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.page}>
       <Text style={styles.name}>{wasteprovider?.name}</Text>
@@ -19,7 +26,7 @@ const Basket = () => {
 
       <View style={styles.separator} />
 
-      <Pressable onPress={createOrder} style={styles.button}>
+      <Pressable onPress={onCreateOrder} style={styles.button}>
         <Text style={styles.buttonText}>
           Create Order &#8226; $ {totalPrice.toFixed(1)}
         </Text>
