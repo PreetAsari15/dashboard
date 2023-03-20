@@ -169,7 +169,6 @@ const OrderDelivery = () => {
           strokeColor="#3FC060"
           // DONOT PUSH API KEY TO REPO
           // apikey="Paste API Key Here"
-          apikey="AIzaSyCxvk-h_L37Tsk0bupRpRU5AjuqEuOwLx0"
           onReady={(result) => {
             if (result <= 0.1) {
               setIsDriverClose(true);
@@ -274,7 +273,9 @@ const OrderDelivery = () => {
           </View>
 
           <View style={styles.orderDetailsContainer}>
-            <Text style={styles.orderItemText}>Retallack to Robinson</Text>
+            <Text style={styles.orderItemText}>
+              University Dr to Cornwall Center
+            </Text>
             <Text style={styles.orderItemText}>Plastic Services x3</Text>
             <Text style={styles.orderItemText}>Hazardous Services x3</Text>
           </View>

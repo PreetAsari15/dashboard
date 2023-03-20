@@ -11,7 +11,7 @@ const Navigation = () => {
 
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {!dbCourier ? (
+      {dbCourier ? (
         <>
           <Stack.Screen name="OrdersScreen" component={OrdersScreen} />
           <Stack.Screen name="OrderDelivery" component={OrderDelivery} />

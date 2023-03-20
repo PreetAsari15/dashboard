@@ -13,7 +13,11 @@ import { Auth, DataStore } from "aws-amplify";
 import { Courier, TransportationModes } from "../../models";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useNavigation } from "@react-navigation/native";
-import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
+import {
+  MaterialIcons,
+  FontAwesome5,
+  MaterialCommunityIcons,
+} from "@expo/vector-icons";
 
 const Profile = () => {
   const { dbCourier, sub, setDbCourier } = useAuthContext();
@@ -44,9 +48,9 @@ const Profile = () => {
     setDbCourier(courier);
   };
 
-  const createCourier = async () => {
+  const createCourier = () => {
     try {
-      const courier = await DataStore.save(
+      const courier = DataStore.save(
         new Courier({
           name,
           sub,
@@ -83,7 +87,11 @@ const Profile = () => {
             borderRadius: 10,
           }}
         >
-          <MaterialIcons name="pedal-bike" size={40} color="black" />
+          <MaterialCommunityIcons
+            name="truck-flatbed"
+            size={40}
+            color="black"
+          />
         </Pressable>
         <Pressable
           onPress={() => setTransportationMode(TransportationModes.LORRY)}
@@ -99,7 +107,7 @@ const Profile = () => {
             borderRadius: 10,
           }}
         >
-          <FontAwesome5 name="car" size={40} color="black" />
+          <MaterialCommunityIcons name="dump-truck" size={40} color="black" />
         </Pressable>
       </View>
       <Button onPress={onSave} title="Save" />

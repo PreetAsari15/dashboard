@@ -22,9 +22,9 @@ function App() {
   return (
     <NavigationContainer>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        {/* <AuthContextProvider> */}
-        <Navigation />
-        {/* </AuthContextProvider> */}
+        <AuthContextProvider>
+          <Navigation />
+        </AuthContextProvider>
       </GestureHandlerRootView>
       <StatusBar style="auto" />
     </NavigationContainer>

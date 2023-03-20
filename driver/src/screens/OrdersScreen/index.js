@@ -4,7 +4,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import orders from "../../../assets/data/orders.json";
 import OrderItem from "../../component/OrderItem";
 import MapView, { Marker } from "react-native-maps";
-import { Entypo } from "@expo/vector-icons";
+import { Entypo, Ionicons } from "@expo/vector-icons";
 // import { DataStore } from "aws-amplify";
 // import { Order } from "../../models";
 
@@ -46,7 +46,7 @@ const OrdersScreen = () => {
             <View
               style={{ backgroundColor: "green", padding: 5, borderRadius: 15 }}
             >
-              <Entypo name="shop" size={24} color="white" />
+              <Ionicons name="trash-bin" size={24} color="white" />
             </View>
           </Marker>
         ))}
