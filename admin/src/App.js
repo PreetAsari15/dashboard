@@ -210,10 +210,10 @@ const App = () => {
 
                 {/* pages  */}
                 <Route path="/orders" element={<Orders />} />
+                <Route path="/order/:id" element={<DetailedOrder />} />
                 <Route path="/ordersV" element={<OrdersV />} />
                 <Route path="/employees" element={<Employees />} />
                 <Route path="/customers" element={<Customers />} />
-                <Route path="orders/:orderID" element={<DetailedOrder />} />
 
                 {/* apps  */}
                 <Route path="/kanban" element={<Kanban />} />

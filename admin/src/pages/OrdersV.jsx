@@ -3,6 +3,8 @@ import { GridComponent, ColumnsDirective, ColumnDirective, Resize, Sort, Context
 
 import { ordersData, contextMenuItems, ordersGrid } from '../resources/dummy';
 import { Header } from '../components';
+// import {Card} from "antd"
+// import dishes from "../resources/dishes.json"
 
 const Orders = () => {
   const editing = { allowDeleting: true, allowEditing: true };
