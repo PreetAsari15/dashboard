@@ -5,21 +5,21 @@ import orders from "../../../assets/data/orders.json";
 import OrderItem from "../../component/OrderItem";
 import MapView, { Marker } from "react-native-maps";
 import { Entypo } from "@expo/vector-icons";
-import { DataStore } from "aws-amplify";
-import { Order } from "../../models";
+// import { DataStore } from "aws-amplify";
+// import { Order } from "../../models";
 
 const order = orders[0];
 
 const OrdersScreen = () => {
-  const [orders, setOrders] = useState([]);
+  // const [orders, setOrders] = useState([]);
   const bottomSheetRef = useRef(null);
   const { width, height } = useWindowDimensions();
 
   const snapPoints = useMemo(() => ["12%", "95%"], []);
 
-  useEffect(() => {
-    DataStore.query(Order).then(setOrders);
-  }, []);
+  // useEffect(() => {
+  //   DataStore.query(Order).then(setOrders);
+  // }, []);
 
   console.log(orders);
 

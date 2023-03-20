@@ -178,7 +178,6 @@ const OrderDelivery = () => {
             setTotalKm(result.distance);
           }}
         />
-
         {/* One marker for wasteprovider and one for user */}
         <Marker
           coordinate={{
