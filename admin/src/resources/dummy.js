@@ -6,6 +6,7 @@ import {
   AiOutlineAreaChart,
   AiOutlineBarChart,
   AiOutlineStock,
+  AiOutlineSync,
 } from "react-icons/ai";
 import {
   FiShoppingBag,
@@ -627,6 +628,17 @@ export const links = [
         key: "signOut",
         name: "SignOut",
         icon: <AiOutlineLogout />,
+      },
+    ],
+  },
+
+  {
+    title: "UpdateWasteProvider",
+    links: [
+      {
+        key: "update",
+        name: "Update",
+        icon: <AiOutlineSync />,
       },
     ],
   },
