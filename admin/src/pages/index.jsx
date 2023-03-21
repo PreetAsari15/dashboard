@@ -16,5 +16,5 @@ export { default as Pyramid } from './Charts/Pyramid';
 export { default as Stacked } from './Charts/Stacked';
 export { default as DetailedOrder } from './DetailedOrder/';
 export { default as Employees } from './Employees';
-export { default as SignOut } from './SignOut';
 export { default as UpdateWasteProvider } from './Update-Waste-Provider';
+export { default as SignOut } from './SignOut';
