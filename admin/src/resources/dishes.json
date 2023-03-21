@@ -1,19 +1,19 @@
 [
     {
       "id": "1",
-      "name": "Big Mac",
+      "name": "Recycling",
       "price": 9.99,
       "quantity": 2
     },
     {
       "id": "2",
-      "name": "Chicken Nuggets",
+      "name": "Hazardous Waste Collection",
       "price": 6.99,
       "quantity": 1
     },
     {
       "id": "3",
-      "name": "Big Tasty",
+      "name": "Steel Collection",
       "price": 15.99,
       "quantity": 3
     }

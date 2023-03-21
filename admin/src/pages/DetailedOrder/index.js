@@ -159,9 +159,7 @@ const DetailedOrder = () => {
   return (
     <Card title={`Order ${id}`} style={{ margin: 20 }}>
       <Descriptions bordered column={{ lg: 1, md: 1, sm: 1 }}>
-        <Descriptions.Item label="Customer">
-          Lukas Grinevicius
-        </Descriptions.Item>
+        <Descriptions.Item label="Customer">Preet Asari</Descriptions.Item>
         <Descriptions.Item label="Customer Address">
           Address 15-29, City, Country
         </Descriptions.Item>
@@ -185,14 +183,34 @@ const DetailedOrder = () => {
       </div>
       <Divider />
       <div style={styles.buttonsContainer}>
-        <Button block type="danger" size="large" style={styles.button}>
+        <Button
+          style={{
+            backgroundColor: "lightred",
+            marginRight: 20,
+            marginLeft: 20,
+          }}
+          block
+          type="danger"
+          size="large"
+          // style={styles.button}
+        >
           Decline Order
         </Button>
-        <Button block type="primary" size="large" style={styles.button}>
+        <Button
+          block
+          type="primary"
+          size="large"
+          style={{ backgroundColor: "blue", marginRight: 20, marginLeft: 20 }}
+        >
           Accept Order
         </Button>
       </div>
-      <Button block type="primary" size="large">
+      <Button
+        block
+        type="primary"
+        size="large"
+        style={{ backgroundColor: "green", marginRight: 20, marginLeft: 20 }}
+      >
         Waste PickUp Is Done
       </Button>
     </Card>
